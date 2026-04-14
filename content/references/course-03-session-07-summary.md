@@ -1,29 +1,119 @@
 ---
-title: "Course 03 Session 7 — Emerging Digital Technologies"
+title: "Emerging Digital Technologies — Session 07: Neuromorphic Computing"
 category: references
-tags: ["#src/course", "#dba/coursework"]
+tags: ["#src/course", "#dba/coursework", "#emerging-digital-technologies"]
 sources:
-  - "_raw/dba-course/Course_03_Emerging_Digital_Technologies/02_Recordings_and_PPTs/Session_07/Session_07.md"
-created: 2026-04-12
-updated: 2026-04-12
-summary: "Course_03 Session 7 stub — YouTube link captured; content pending transcript ingest."
+  - "_raw/dba-course/Course_03_Emerging_Digital_Technologies/02_Recordings_and_PPTs/Session_07/transcript.txt"
+created: 2026-04-13
+updated: 2026-04-13
+summary: "Guest lecturer and neuromorphic chip co-founder walks DBA participants from digital transformation and AI fundamentals through neural networks, language model taxonomy, and the brain-inspired hardware architecture of neuromorphic computing, situating it as the natural processor for edge-AI devices."
 ---
 
-# Course 03 Session 7 — Emerging Digital Technologies
+# Emerging Digital Technologies — Session 07: Neuromorphic Computing
 
-**Course**: [[emerging-digital-technologies|Emerging Digital Technologies]] (Course 03)  
-**Instructor**: [[dr-sumitra-padman|Dr. Sumitra Padman]]
+**Instructor**: Guest lecturer — co-founder of INA (Intelligent Nano Systems), a Netherlands-based neuromorphic chip company; facilitated by [[dr-sumitra-padman|Dr. Sumitra Padman]]
+**Date**: Session 07 (approximate recording date corresponds to course schedule)
+**Course**: Emerging Digital Technologies (Course 03)
 
-## Resources
+Session 07 is delivered by a practitioner-guest who holds a dual identity: semiconductor chip designer and management professional. His explicit goal is to demystify neuromorphic computing for senior executives and decision-makers who will never design a processor but who will have to decide whether, when, and how to adopt neuromorphic solutions. The session deliberately avoids protocol-level technical detail in favour of building a mental map — from digital transformation pressures, through AI taxonomies, language model varieties, and neural network types, arriving at neuromorphic computing as both hardware concept and business opportunity. Rather than a linear lecture, the session is structured as a guided conversation, with participants asking substantive questions about enterprise AI strategy, quantum computing comparisons, sensor ecosystems, and the frontier concept of Large Action Models (LAMs).
 
-- [YouTube Recording](https://www.youtube.com/watch?v=puYS_L_LAxo)
-- [UpGrad Page](https://learn.upgrad.com/course/8919/segment/62703/383165/1161184/5793262)
+The session opens with context: the global pressure of digital transformation forces organisations to continuously adopt emerging technologies without disrupting ongoing operations. The instructor uses the metaphor of a treadmill — one must keep moving while the ground itself keeps changing. He surveys the full technology landscape (cloud, IoT, AI, machine learning, deep learning, large language models) and then progressively narrows focus: all these software-layer developments ultimately need a hardware substrate to run efficiently, and for the edge-device era — characterised by asynchronous sensor data, severe power budgets, and real-time decision requirements — the right substrate is a neuromorphic processor. The second half of the session grounds this vision in INA's "Pulsar" chip: a 2.8 mm² silicon die embedding analog spiking neural network cores alongside a RISC-V housekeeping core, capable of operating at 500× lower power than equivalent ARM-based solutions and 100× lower latency due to on-chip in-memory compute.
 
-## Content
+The final segment broadens the discussion to future trajectories: from Large Language Models (LLMs) to Large Action Models (LAMs) that not only predict but act, the concept of "Living Intelligence" as the convergence of AI, sensors, and biotechnology, and practical frameworks for organisations to evaluate and sequence technology adoption (including the "customer surplus value" heuristic for judging whether a new technology truly creates value). Throughout, the instructor emphasises that the field is in its earliest commercial days — standards are still forming, software models for neuromorphic processors are incomplete, and this very incompleteness represents the opportunity window for the participants in the room.
 
-*Stub — session content will be enriched when the transcript is ingested.*
+## Key Concepts
+
+- **Digital Transformation as a Treadmill** — Digital transformation is not a one-time project but a continuous state in which organisations must keep adopting new technologies while continuing to operate existing ones. The instructor cautions against "transmogrification" — wholesale disruption of business processes — in favour of incremental integration. The key competency is knowing which new technologies to pick up, in which sequence, and at which layer of the architecture.
+
+- **The AI Hierarchy: Narrow → General → Super → Generative** — The session distinguishes four levels of AI. Narrow AI (ANI) performs one specific task, such as face recognition in a smartphone camera. General AI (AGI) adapts across a broader task class, such as recognising all human faces regardless of pose. Super AI goes further, distinguishing human from non-human presence at scale. Generative AI creates original outputs (images, text, music, documents) from the patterns it has absorbed. In practice, most deployed systems mix these levels — different modules of the same application may use different AI paradigms depending on what each sub-task requires.
+
+- **Computer Architecture Evolution: Von Neumann → Harvard → RISC → Neuromorphic** — Classical von Neumann architecture stores instructions and data in a single shared memory, making implementation simple but sequential and slower. Harvard architecture separates instruction memory from data memory, improving speed. Reduced Instruction Set Computing (RISC) further optimises by limiting the instruction set to the operations actually needed for a class of applications (e.g., ARM processors in mobile phones, RISC-V increasingly in edge devices). Neuromorphic architecture makes a more fundamental departure: it abandons the separate control/data flow model entirely and processes information the way the brain does — in parallel, event-driven, with memory co-located with computation in each "neuron" element.
+
+- **Why Neuromorphic Now — The Edge Data Problem** — Modern devices carry more than ten sensors each, generating data asynchronously and unpredictably. A smartphone may simultaneously receive input from a camera, accelerometer, microphone, GPS, and fingerprint sensor, all firing on different schedules. Classical architectures were designed for sequential, clock-driven workloads and must constantly move data between processor and separate memory, incurring latency and power cost. As edge devices are expected to perform AI inference locally (rather than sending data to the cloud), the power envelope and footprint constraints become critical — and neuromorphic processors, with in-memory compute and event-driven activation, are structurally better suited to this workload.
+
+- **Spiking Neural Networks (SNNs) — Event-Driven Intelligence** — Unlike conventional artificial neural networks that process a continuous stream of data at every clock cycle, spiking neural networks only activate when input signals cross a threshold. The instructor uses the analogy of a crane balanced over a fluid container: the crane only tips and discharges when the accumulated weight of fluid exceeds a tipping point — not continuously. This "spike" model dramatically reduces power consumption because computation is triggered by events rather than running at a constant rate. SNNs are therefore particularly well-suited for IoT and medical-monitoring devices, where data is often sparse or intermittent (e.g., activating an alert only when a patient's blood-oxygen level drops below 95).
+
+- **Neural Network Taxonomy** — The session surveys the major neural network architectures to show why different applications call for different designs. Recurrent Neural Networks (RNNs) handle sequential, repeated patterns and are used in simple speech recognition (early Alexa). Convolutional Neural Networks (CNNs) are designed for grid-structured data such as images and are used in face recognition, autonomous vehicle perception, and video analysis. Generative Adversarial Networks (GANs) have a generator and discriminator in a feedback loop and underlie deepfake generation. Long Short-Term Memory (LSTM) networks are optimised for tasks requiring selective memory, such as handwriting recognition. Deep Belief Networks (DBNs) stack multiple restricted Boltzmann machines for complex multi-variable problems like HR team performance modelling. Radial Basis Function (RBF) networks accept external inputs at multiple layers, useful for personalisation. Autoencoders perform unsupervised compression — the same mechanism that auto-compresses images in WhatsApp.
+
+- **Language Model Taxonomy: NLP → Probabilistic → Neural → Foundation → LLM → SLM → Local** — The session distinguishes multiple levels of language modelling. Natural Language Processing (NLP) is the parent field. Probabilistic language models use statistical context (e.g., a lawyer speaks in recognisable patterns). Neural language models are more flexible, adapting to varied styles. Foundation models (e.g., GPT-style transformers) are trained on vast, unlabelled data and serve as base layers for downstream tasks. Large Language Models (LLMs) apply foundation models at scale with enormous training datasets. Instructional language models respond only to commands (e.g., Alexa). Dialogue language models support conversational exchange. Small Language Models (SLMs) focus on a narrow domain (e.g., Shakespeare's works, a particular engineering field). Local language models restrict to a geographical or linguistic context, enabling faster, more relevant retrieval for region-specific queries. The instructor's key business insight: most of a person's information needs are local, so localised, smaller models may deliver better performance at far lower cost than global LLMs.
+
+- **The Transformer as Universal Engine** — The Transformer architecture (the "T" in ChatGPT) is presented as the central extraction and mapping engine underlying virtually all modern language models. Analogous to an electrical transformer that converts voltage levels, a neural transformer extracts and remaps patterns from input data. It performs attention — identifying which parts of an input are most relevant to a query — making it the workhorse of both LLM inference and smaller specialised models.
+
+- **Neuromorphic Hardware Architecture — Neurons, Synapses, In-Memory Compute** — A neuromorphic processor replicates the structural primitives of the biological brain at silicon scale. Each processing element is a neuron, receiving weighted inputs (via synapses) and firing when the sum crosses a threshold. Unlike von Neumann processors where memory and compute are separate — forcing costly data-movement — neuromorphic processors embed memory within each neuron, eliminating the "memory bottleneck." The result is 100× lower latency and, in INA's case, 500× lower power compared to ARM-based equivalents. Scaling a neuromorphic chip means adding more neurons and synapses (increasing the neuron grid), not redesigning the architecture — analogous to the way a growing brain adds synaptic connections while retaining the same fundamental neuron structure.
+
+- **AI vs. Neuromorphic Computing — Software vs. Hardware** — The instructor draws a sharp and clarifying distinction: AI is primarily a software paradigm (algorithms, models, training procedures) while neuromorphic computing is a hardware paradigm (a processor architecture). The relationship is analogous to the emergence of GPUs: gaming was originally computed on general-purpose CPUs via software; Nvidia built a dedicated processor for pixel-level computation, and the same processor architecture later became the foundation for AI training. Similarly, neural network algorithms can run on standard CPUs or GPUs today, but a dedicated neuromorphic processor executes them more efficiently. The two are complementary, not competing.
+
+- **Large Action Models (LAMs) — From Prediction to Action** — The session introduces LAMs as the evolutionary step beyond LLMs. While an LLM predicts the most likely text completion, a LAM takes the LLM's output plus additional sensor inputs, contextual data, and domain-specific models to trigger an action in the physical world. Examples discussed include: a smart fridge that not only detects that items are depleted but automatically places an order; a blood-pressure wearable that, when readings fall below a threshold, not only alerts the patient but identifies available doctors and books an appointment; a smart microwave that determines from sensor data when food is actually cooked and stops the cycle. The instructor positions agentic AI frameworks (such as LangChain, Crew AI) as the enterprise analogue — orchestrating multiple specialised AI agents in a hierarchy to complete complex tasks.
+
+- **Living Intelligence — The Convergence Horizon** — The session closes with the concept of "Living Intelligence": the point at which AI, neuromorphic hardware, advanced sensors, and biotechnology converge into devices and systems that sense, learn, adapt, and act continuously without human intervention. The instructor frames this not as a distant science-fiction scenario but as a near-term engineering trajectory already visible in neural implants, gesture-controlled environments, drone-based autonomous field operations, and AI-enhanced hearing aids. For DBA participants, the practical implication is organisational: build awareness of what combinations of sensor, language model, and neural network architecture are feasible; develop pragmatic disruption scenarios; and invest in skilling people before the market window closes.
+
+## Technologies / Frameworks Discussed
+
+| Technology | Type | Key Point |
+|---|---|---|
+| Von Neumann Architecture | Processor design | Single shared memory for data and instructions; simple but sequential; the origin of most conventional computers |
+| Harvard Architecture | Processor design | Separate instruction and data memories; faster than von Neumann; basis for many DSPs |
+| RISC / ARM / RISC-V | Processor ISA | Reduced instruction set enables smaller, faster, cheaper chips; ARM dominates mobile; RISC-V is an open alternative gaining traction |
+| Neuromorphic Processor (INA Pulsar) | Brain-inspired hardware | Analog SNN cores + RISC-V core; 2.8 mm² die; 500× lower power, 100× lower latency vs. ARM; in-memory compute |
+| Spiking Neural Network (SNN) | Neural network type | Activates only on threshold-crossing events; 100× more compact and power-efficient than continuous-data ANNs |
+| Convolutional Neural Network (CNN) | Neural network type | Grid-based; used for image/video recognition, face detection, autonomous vehicle perception |
+| Recurrent Neural Network (RNN) | Neural network type | Sequential data; used in speech recognition, weather forecasting, time-series prediction |
+| Generative Adversarial Network (GAN) | Neural network type | Generator + discriminator feedback loop; produces deepfakes, synthetic media |
+| Long Short-Term Memory (LSTM) | Neural network type | Selective memory; used in handwriting recognition, session-based recommendation |
+| Autoencoder | Neural network type | Unsupervised compression and reconstruction; underlies image compression in apps |
+| Transformer | Language model engine | Attention-based pattern extractor; the "T" in ChatGPT; core engine of all major LLMs |
+| Large Language Model (LLM) | AI / language model | Trained on vast data; general-purpose text understanding and generation (GPT, DeepSeek, Copilot) |
+| Small Language Model (SLM) | AI / language model | Domain-restricted; lower power, faster, smaller footprint than LLM; better for specific applications |
+| Local Language Model | AI / language model | Geography/language-restricted; improves relevance and efficiency for regional queries |
+| Large Action Model (LAM) | Emerging AI paradigm | LLM + multi-modal sensor input + action layer; moves from prediction to physical-world action |
+| Foundation Model | AI / pre-training | Large unlabelled-data-trained base; fine-tuned into LLMs, SLMs, instruction models |
+| LangChain / Crew AI | Agentic AI framework | Orchestrates chains of specialised AI agents; enterprise analogue of LAM architecture |
+| PyTorch / TensorFlow | ML frameworks | Used to develop and port models to neuromorphic processors; INA provides custom SDK layers on top |
+| Raspberry Pi / Arduino | Edge microcontrollers | Current baseline for edge computing; neuromorphic processors are positioned as their replacement in AI-intensive edge applications |
+| NVIDIA GPU | AI accelerator | Discussed as the dominant training platform that neuromorphic chips do not yet compete with at data-center scale |
+
+## Important Examples and Case Studies
+
+**INA "Pulsar" Chip — Neuromorphic Silicon in Production**
+INA (Intelligent Nano Systems), headquartered in the Netherlands and founded in 2018, has developed a neuromorphic chip called Pulsar. The chip is a 2.8 mm² die fabricated at a 28 nm process node, embedding analog SNN neuron cores alongside a RISC-V housekeeping core. It achieves 500× lower power consumption and 100× lower latency compared to equivalent ARM-based edge processors by placing computation inside the memory (in-memory compute), eliminating the von Neumann memory bottleneck. The chip targets the deep-edge sensor layer: it sits physically adjacent to the sensor rather than on a separate aggregation board. INA provides a full developer kit including a Python-based SDK, compiler, and assembler so customers can port existing CNN models to the chip without having to learn SNN programming from scratch. As of the session date, the chip has been validated in benchmark trials but does not yet have paying production customers — illustrating the time lag between chip readiness and commercial adoption.
+
+**Neuromorphic Hardware in Data Centres — Benchmarking Study**
+The instructor referenced an unpublished benchmarking paper authored by his team (to be shared with participants) in which INA's Pulsar and several competitor neuromorphic chips were tested as compute cards inside experimental server configurations, side-by-side with standard data-centre servers. The experiment ran identical inference workloads through both systems over time. Key finding: neuromorphic processors perform well on inference, but the absence of mature software models written specifically for neuromorphic instruction sets is the binding constraint preventing commercial data-centre adoption. Unlike ARM or x86 ecosystems, which have decades of optimised software, neuromorphic processors require new model compilations — a chicken-and-egg problem the industry is only beginning to address.
+
+**Fire Alarm with Human Detection — Privacy-Preserving Sensing**
+The instructor described an active customer project in India: a smart fire alarm system that uses a radar sensor (rather than a conventional PIR or IR sensor) coupled to a neuromorphic processor to detect whether the area being monitored contains humans. The distinction matters for emergency response prioritisation — first responders need to know whether a burning room contains people or only equipment. Crucially, a radar sensor detects the presence of a human body without capturing an identifiable image, preserving privacy while enabling life-safety decisions. The neuromorphic processor enables this because its parallel event-driven architecture can process radar return signals fast enough for real-time human presence detection at ultra-low power. This example illustrates a broader principle the instructor emphasises: neuromorphic processors change which sensors are practical to use, not just how existing sensors are processed.
+
+**Smart Microwave — LAM in Domestic Appliances**
+A student during Q&A raised a paper describing AI-based microwave ovens that determine whether food is actually cooked (using sensors inside the cavity) and automatically stop the cooking cycle. The instructor used this as a canonical example of a Large Action Model: the microwave's LLM-equivalent processes multi-modal sensor data (temperature, moisture, time) and takes an action (stopping the timer) rather than merely predicting or reporting. He extended the example: different food types require different sensor configurations, so the same LAM framework would need to be parameterised differently for chicken versus bread versus vegetables — illustrating how LAMs are inherently application-specific.
+
+**DeepSeek and the Multi-Chip LLM Strategy**
+In discussing LLMs, the instructor referenced the DeepSeek model (which received media attention near the time of the session) as an example of an alternative training strategy: rather than requiring a single extremely powerful GPU (Nvidia's approach), DeepSeek distributes training across many smaller processors running the same workload in parallel. The instructor used this to illustrate that the "best" hardware architecture is application- and model-dependent — and that granularising both the model and the hardware is a sustainable alternative to buying the most powerful single chip.
+
+**Amazon Dash / Smart Fridge — Autonomous Procurement as LAM**
+The instructor cited Amazon's smart fridge concept — where the refrigerator detects depleted items and places an order without user action — as an early-stage commercial example of a LAM operating at the personal-consumption level. He noted that this system already exists in prototype form and represents the logical endpoint of combining local sensors, a language model (to classify item type and infer quantity thresholds), and an action layer (placing an API call to an e-commerce platform).
+
+**Agricultural Drone — Edge AI for Autonomous Field Decisions**
+During discussion, a student proposed a drone use case: an autonomous agricultural drone that uses sensors to detect which fruits or crops are ready for harvest, then acts — either harvesting the item or applying pesticide — without returning data to a central server for processing. The instructor endorsed this as a well-formed neuromorphic use case: real-time parallel sensor fusion (visual, spectral, or chemical sensors), event-driven processing (only act when a threshold of "ripeness" is detected), ultra-low power (battery-operated drone), and immediate action. He then connected it to a contemporaneous news story about an arm-sized surveillance drone used in a forest in Kashmir that operated silently and autonomously.
 
 ## Related
 
+- [[emerging-digital-technologies|Emerging Digital Technologies]] — parent course
 - [[course-03-overview-emerging-digital-technologies|Course 03 Overview]]
-- [[emerging-digital-technologies|Emerging Digital Technologies]] concept
+- [[dr-sumitra-padman|Dr. Sumitra Padman]] — course facilitator
+- [[neuromorphic-computing|Neuromorphic Computing]] — primary topic of session
+- [[spiking-neural-networks|Spiking Neural Networks (SNNs)]] — key enabling algorithm for neuromorphic hardware
+- [[edge-ai|Edge AI]] — deployment context for neuromorphic processors
+- [[large-language-models|Large Language Models (LLMs)]] — software layer running on neuromorphic and conventional hardware
+- [[large-action-models|Large Action Models (LAMs)]] — emerging paradigm: LLM + sensor input + action execution
+- [[transformer-architecture|Transformer Architecture]] — core engine of LLMs; the "T" in ChatGPT
+- [[convolutional-neural-networks|Convolutional Neural Networks (CNNs)]] — image/video processing; runs on neuromorphic and standard processors
+- [[recurrent-neural-networks|Recurrent Neural Networks (RNNs)]] — sequential data; speech recognition use cases
+- [[generative-adversarial-networks|Generative Adversarial Networks (GANs)]] — deepfake generation; feedback-loop network architecture
+- [[foundation-models|Foundation Models]] — pre-trained base for LLMs and SLMs
+- [[small-language-models|Small Language Models (SLMs)]] — domain-specific, lower-power alternatives to LLMs
+- [[digital-transformation|Digital Transformation]] — strategic context motivating the adoption of neuromorphic computing
+- [[iot-and-sensors|IoT and Sensors]] — the hardware ecosystem producing the data that neuromorphic processors must handle
+- [[quantum-computing|Quantum Computing]] — contrasted as a parallel (not successor) computing paradigm, based on qubits rather than neurons
+- [[agentic-ai|Agentic AI]] — enterprise-side analogue of LAMs; frameworks like LangChain and Crew AI
+- [[in-memory-compute|In-Memory Compute]] — architectural innovation that gives neuromorphic processors their latency and power advantages
+- [[customer-surplus-value|Customer Surplus Value]] — heuristic for evaluating whether a new technology creates genuine value vs. incremental improvement
