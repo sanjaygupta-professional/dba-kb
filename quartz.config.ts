@@ -8,16 +8,16 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
-    pageTitleSuffix: "",
+    pageTitle: "DBA in AI — Knowledge Base",
+    pageTitleSuffix: " | DBA Wiki",
     enableSPA: true,
     enablePopovers: true,
     analytics: {
       provider: "plausible",
     },
     locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    baseUrl: "sanjaygupta-professional.github.io/dba-kb",
+    ignorePatterns: ["private", "templates", ".obsidian", "_raw", "_meta", "_archives"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
