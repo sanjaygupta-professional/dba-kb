@@ -33,3 +33,32 @@ title: Wiki Log
 - [2026-04-12T12:47:00-07:00] INGEST batch=pdf_skip count=1 pages_created=0 note=dest_already_exists_from_extracted_txt mode=full
 - [2026-04-12T13:00:00-07:00] LINT phase-e report: total_pages=263 total_links=820 true_orphans=0 (defn:no_in_AND_no_out) pages_no_incoming=142 (leaf_pages,acceptable) concepts_without_incoming=0 status=PASS
 - [2026-04-13T00:00:00-07:00] SELFTEST post-phase-e: validate-page=PASS wikilinks=PASS(820) manifest=PASS(246) index=PASS(263) ALL_CHECKS_PASS
+- [2026-04-14] ENRICH course-05-session-02 words=1096 source=transcript
+- [2026-04-14] ENRICH course-05-session-03 words=1318 source=transcript
+- [2026-04-14] ENRICH course-05-session-01 words=1336 source=transcript
+- [2026-04-14] ENRICH course-05-session-04 words=1353 source=transcript
+- [2026-04-14] ENRICH course-05-session-05 words=1453 source=transcript
+- [2026-04-14] ENRICH course-05-session-06 words=1211 source=transcript
+- [2026-04-14] ENRICH course-05-session-08 words=1155 source=transcript
+- [2026-04-14] ENRICH course-05-session-12 words=1512 source=transcript
+- [2026-04-14] ENRICH course-05-session-09 words=1332 source=transcript
+- [2026-04-14] ENRICH course-05-session-11 words=1495 source=transcript
+- [2026-04-14] ENRICH course-05-session-13 words=1633 source=transcript
+- [2026-04-14] ENRICH course-05-session-07 words=1304 source=transcript
+- [2026-04-14] ENRICH course-05-session-15 words=1612 source=transcript
+- [2026-04-14] ENRICH course-05-session-14 words=1649 source=transcript
+- [2026-04-14] ENRICH course-05-session-10 words=967 source=transcript
+- [2026-04-14] ENRICH course-06-session-03 words=1882 source=transcript
+- [2026-04-14] ENRICH course-06-session-02 words=1873 source=transcript
+- [2026-04-14] ENRICH course-06-session-04 words=1853 source=transcript
+- [2026-04-14] ENRICH course-06-session-01 words=2225 source=transcript
+- [2026-04-14] ENRICH course-06-session-05 words=1347 source=transcript
+- [2026-04-14] ENRICH course-06-session-06 words=1938 source=transcript
+- [2026-04-14] ENRICH course-06-session-07 words=2147 source=transcript
+- [2026-04-14] ENRICH course-06-session-08 words=1691 source=transcript
+- [2026-04-14] ENRICH course-06-session-09 words=1530 source=transcript
+- [2026-04-14] ENRICH course-06-session-10 words=2313 source=transcript
+- [2026-04-14] ENRICH course-06-session-11 words=1719 source=transcript
+- [2026-04-14] ENRICH course-06-session-13 words=2238 source=transcript
+- [2026-04-14] ENRICH course-06-session-14 words=1554 source=transcript
+- [2026-04-14] ENRICH course-06-session-15 words=1799 source=transcript
