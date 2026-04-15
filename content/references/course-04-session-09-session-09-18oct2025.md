@@ -40,6 +40,21 @@ Total error = Bias² + Variance + Noise (irreducible)
 
 ### The Bull's-Eye 2×2
 
+```mermaid
+quadrantChart
+    title Bias-Variance Bull's-Eye
+    x-axis "Low Variance" --> "High Variance"
+    y-axis "High Bias" --> "Low Bias"
+    quadrant-1 Ideal
+    quadrant-2 High variance, low bias
+    quadrant-3 High bias, high variance
+    quadrant-4 SUB zone
+    "Ideal model": [0.2, 0.8]
+    "Overfit model (COV)": [0.8, 0.75]
+    "Underfit model (SUB)": [0.2, 0.25]
+    "Worst case": [0.8, 0.2]
+```
+
 Visualised as a shooting target (true value at centre):
 
 |  | Low Variance | High Variance |

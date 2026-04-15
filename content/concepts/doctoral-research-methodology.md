@@ -34,6 +34,24 @@ Sumitra's framing: imagine the reviewer is skeptical and keep iterating until th
 
 ## DBA vs PhD Scope (Prof. Morty, Course 07)
 
+```mermaid
+quadrantChart
+    title DBA vs PhD Research Focus
+    x-axis "Applied / Business" --> "Theoretical / Novel"
+    y-axis "Low Technical Depth" --> "High Technical Depth"
+    quadrant-1 PhD territory
+    quadrant-2 PhD with applications
+    quadrant-3 Practitioner work
+    quadrant-4 DBA sweet spot
+    "Governance & ROI": [0.2, 0.4]
+    "Change Management": [0.15, 0.35]
+    "Workflow Integration": [0.25, 0.45]
+    "Domain Evals & Guardrails": [0.3, 0.65]
+    "Algorithm Design": [0.85, 0.85]
+    "Novel ML Methods": [0.9, 0.9]
+    "Golden Dataset Strategy": [0.4, 0.7]
+```
+
 | DBA focus | PhD focus |
 |---|---|
 | Governance, ROI, process integration | Algorithm design, novel methods |
@@ -48,6 +66,22 @@ A DBA thesis *can* include deep technical work, but it must be anchored by a cle
 ## Three Thesis Output Modes
 
 Select based on career ambition:
+
+```mermaid
+flowchart TD
+    A([DBA Candidate]) --> B{Career ambition?}
+    B -->|Academic path| C["Mode 1: Research Paper\nDesign a course merging AI + domain\nApply for adjunct at 50% completion"]
+    B -->|Executive leader| D["Mode 2: Book\nConvert to podcast or video series\nBoards consume audio, not papers"]
+    B -->|Entrepreneur| E["Mode 3: Product / Startup\nBuild golden dataset benchmark\nOutperform GPT-4 in your domain"]
+
+    C --> F(["Adjunct faculty\n/ scientist track"])
+    D --> G(["Senior exec\n/ board track"])
+    E --> H(["Startup /\nventure track"])
+
+    style C fill:#e8f4fd,stroke:#0066cc
+    style D fill:#e8f8e8,stroke:#006600
+    style E fill:#fdf3e8,stroke:#cc6600
+```
 
 | Mode | Career path | Additional artifact to build |
 |---|---|---|

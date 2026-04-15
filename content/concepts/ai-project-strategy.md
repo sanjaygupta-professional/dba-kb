@@ -40,6 +40,21 @@ Pattern:
 
 Remove the AI hat. Start with business:
 
+```mermaid
+flowchart TD
+    A([Business Problem]) --> B[/"Remove the AI hat"/]
+    B --> C["Layer 1 — Strategy\nWHO × WHAT × WHY × HOW MUCH\nQuantified value hypothesis required"]
+    C --> D["Layer 2 — Decision\nWhat specific decision should AI make?\nAutomated or Augmented?"]
+    D --> E{AI Fit Test}
+    E -->|"Repeatable + Measurable\n+ Scalable"| F["Layer 3 — Workflow\nIntegrate AI output into\nexisting processes"]
+    E -->|"One-off or Opaque criteria"| G(["Regular software\nor human judgement"])
+    F --> H(["DBA Research Frame\nGovernance · ROI · Change Mgmt"])
+
+    style G fill:#fee,stroke:#c00
+    style H fill:#efe,stroke:#060
+    style E fill:#fff8dc,stroke:#aa8800
+```
+
 ### Layer 1 — Strategy
 Define what business goal you are pursuing. A good strategy answers:
 - **WHO** is affected?
@@ -86,6 +101,18 @@ Mandatory elements:
 - Specific decision type (automated vs. augmented)
 
 Language to avoid: *"significant", "tremendous", "unbelievably", "massive improvement"* — all vague adjectives that weaken a strategic objective.
+
+## AI Crush Pattern
+
+```mermaid
+flowchart LR
+    A["Leader sees\nAI demo"] --> B["Mandate:\nImplement AI"]
+    B --> C["Team builds\nimpressive demo"]
+    C --> D["Neither party\ndefines value"]
+    D --> E(["Project abandoned\n6–12 months later"])
+    style E fill:#fee,stroke:#c00
+    style A fill:#fff8dc,stroke:#aa8800
+```
 
 ## Prioritisation Rubric
 

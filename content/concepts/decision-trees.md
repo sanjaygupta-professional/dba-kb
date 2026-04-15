@@ -40,6 +40,24 @@ Splitting continues until a stopping criterion is met (max depth, min samples pe
 | No feature scaling needed | Struggles with linear relationships |
 | Handles missing data | Prone to overfitting without regularisation |
 
+## The ID3 Algorithm
+
+```mermaid
+flowchart TD
+    A([Training Dataset]) --> B["Calculate Entropy H\nH = -Σ pᵢ · log₂(pᵢ)"]
+    B --> C["For each attribute:\nCalculate Information Gain\nIG = H_before − H_after"]
+    C --> D{High-cardinality\nattribute?}
+    D -->|"Many states\ne.g. Customer ID"| E["Use Gain Ratio\nIG ÷ IC(attribute)\nC4.5 algorithm"]
+    D -->|"Few states\ne.g. Car Type"| F["Use raw IG\nID3 algorithm"]
+    E & F --> G["Split on attribute\nwith highest score"]
+    G --> H{Pure leaf or\nstopping criterion?}
+    H -->|No| B
+    H -->|Yes| I(["Leaf node\nclass prediction"])
+
+    style E fill:#fff8dc,stroke:#aa8800
+    style I fill:#efe,stroke:#060
+```
+
 ## Information Gain and the High-Cardinality Problem
 
 The standard split criterion is **Information Gain (IG)**:
