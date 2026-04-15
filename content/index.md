@@ -5,7 +5,7 @@ updated: 2026-04-14
 
 # Wiki Index — DBA Knowledge Map
 
-*Automatically maintained. Total pages: 255 across 246 sources.*
+*Automatically maintained. Total pages: 257 across 250 sources.*
 *See [[overview]] for a high-level vault orientation.*
 
 ## Navigation Guide
@@ -33,9 +33,13 @@ updated: 2026-04-14
 - [[course-04-overview-foundations-of-ml-and-ai]] — Course overview
 - [[course-04-session-01-20250920-overview]] — AI paradigms, vibe-coding fraud detection
 - [[course-04-session-02-20250921-overview-mlterminology]] — ML taxonomy: supervised/unsupervised/deep
+- [[course-04-session-03-session-03-27sep2025]] — Descriptive statistics; mean/median/mode, IQR, variance; linear regression intro
 - [[course-04-session-05-20251004-linearregression]] — Linear regression deep dive
 - [[course-04-session-06-20251005-linearregression]] — Advanced regression; spurious correlation, multicollinearity
 - [[course-04-session-07-20251011-logisticregression-classificationmetrics]] — Logistic regression and classification metrics
+- [[course-04-session-09-session-09-18oct2025]] — Bias-variance tradeoff; SUB/COV mnemonics; train/validation/test splits
+- [[course-04-session-10-session-10-19oct2025]] — Decision trees: entropy, information gain, ID3, Gain Ratio, KNN
+- [[course-04-session-15-session-15-08nov2025]] — Time series forecasting; Trend/Seasonality/Randomness; course summary
 
 ---
 
@@ -116,10 +120,11 @@ updated: 2026-04-14
 ## Theme: DBA Research Methodology
 *Course 07 — AI Project Design and Execution*
 
-- [[doctoral-research-methodology]] — Concept page: DBA research rigour and the 'why' question
+- [[doctoral-research-methodology]] — Concept: DBA vs PhD scope, thesis output modes, golden dataset strategy
+- [[ai-project-strategy]] — Concept: AI Crush vs AI Strategy — why 60-65% of AI failures are planning failures
 - [[course-07-overview-ai-project-design-and-execution]] — Course 07 index
-- [[course-07-session-01-summary]] — Session 01: AI project design frameworks
-- [[course-07-session-02-summary]] — Session 02: Execution and evaluation
+- [[course-07-session-01-summary]] — Session 01: AI Crush vs AI Strategy, 3-layer framework (Strategy→Decision→Workflow)
+- [[course-07-session-02-summary]] — Session 02: DBA thesis framework, strategic objectives workshop
 
 ---
 
@@ -128,6 +133,7 @@ updated: 2026-04-14
 - [[dr-sridhar-pappu]] — Co-founder INSOFE; Course 04 instructor
 - [[dr-srinivasa-varadharajan]] — Course 05 DL instructor; ex-Dean R&D INSOFE; GGU Professor of Practice
 - [[dr-sumitra-padman]] — Academic lead DBA tech programmes; Course 03 anchor
+- [[prof-dakshina-morti]] — Course 07 instructor; serial entrepreneur-educator; AI Crush vs AI Strategy framework
 - [[insofe]] — International School of Engineering; INSOFE/upGrad institution
 - [[upgrad]] — EdTech company; DBA programme delivery partner with GGU
 
@@ -178,7 +184,7 @@ updated: 2026-04-14
 - [[course-04-session-02-session-02-21sep2025]] — Foundations of ML and AI Session 02 stub
 - [[course-04-session-02-youtube]] — YouTube recording link for Foundations of ML and AI Session 02.
 - [[course-04-session-03-materials-link]] — SharePoint materials folder link for Foundations of ML and AI Session 03.
-- [[course-04-session-03-session-03-27sep2025]] — Foundations of ML and AI Session 03 stub
+- [[course-04-session-03-session-03-27sep2025]] — Descriptive statistics (mean/median/mode, IQR, variance); N95/Sanitizer example; linear regression agenda
 - [[course-04-session-03-youtube]] — YouTube recording link for Foundations of ML and AI Session 03.
 - [[course-04-session-04-materials-link]] — SharePoint materials folder link for Foundations of ML and AI Session 04.
 - [[course-04-session-04-session-04-28sep2025]] — Foundations of ML and AI Session 04 stub
@@ -199,10 +205,10 @@ updated: 2026-04-14
 - [[course-04-session-08-session-08-12oct2025]] — Foundations of ML and AI Session 08 stub
 - [[course-04-session-08-youtube]] — YouTube recording link for Foundations of ML and AI Session 08.
 - [[course-04-session-09-materials-link]] — SharePoint materials folder link for Foundations of ML and AI Session 09.
-- [[course-04-session-09-session-09-18oct2025]] — Foundations of ML and AI Session 09 stub
+- [[course-04-session-09-session-09-18oct2025]] — Bias-variance tradeoff; SUB/COV mnemonics; train/validation/test split strategy
 - [[course-04-session-09-youtube]] — YouTube recording link for Foundations of ML and AI Session 09.
 - [[course-04-session-10-materials-link]] — SharePoint materials folder link for Foundations of ML and AI Session 10.
-- [[course-04-session-10-session-10-19oct2025]] — Foundations of ML and AI Session 10 stub
+- [[course-04-session-10-session-10-19oct2025]] — Decision trees: entropy, information gain, ID3, Gain Ratio, high-cardinality warning; KNN
 - [[course-04-session-10-youtube]] — YouTube recording link for Foundations of ML and AI Session 10.
 - [[course-04-session-11-materials-link]] — SharePoint materials folder link for Foundations of ML and AI Session 11.
 - [[course-04-session-11-session-11-25oct2025]] — Foundations of ML and AI Session 11 stub
@@ -217,7 +223,7 @@ updated: 2026-04-14
 - [[course-04-session-14-session-14-02nov2025]] — Foundations of ML and AI Session 14 stub
 - [[course-04-session-14-youtube]] — YouTube recording link for Foundations of ML and AI Session 14.
 - [[course-04-session-15-materials-link]] — SharePoint materials folder link for Foundations of ML and AI Session 15.
-- [[course-04-session-15-session-15-08nov2025]] — Foundations of ML and AI Session 15 stub
+- [[course-04-session-15-session-15-08nov2025]] — Time series forecasting: Trend/Seasonality/Randomness, causal variables; Course 04 summary
 - [[course-04-session-15-youtube]] — YouTube recording link for Foundations of ML and AI Session 15.
 - [[course-05-session-01-session-01-15nov2025]] — Perceptron, Hebbian learning, biological neuron model
 - [[course-05-session-02-session-02-16nov2025]] — Activation functions, backpropagation, gradient descent
@@ -282,10 +288,10 @@ updated: 2026-04-14
 - [[course-06-session-15-youtube]] — YouTube recording link for GenAI and Pretrained Models Session 15.
 - [[course-07-overview-ai-project-design-and-execution]] — Course 07 index: AI Project Design and Execution
 - [[course-07-session-01-materials-link]] — SharePoint materials folder link for AI Project Design and Execution Session 01.
-- [[course-07-session-01-summary]] — AI Project Design and Execution Session 01 stub
+- [[course-07-session-01-summary]] — AI Project Design and Execution Session 01: AI Crush vs AI Strategy framework
 - [[course-07-session-01-youtube]] — YouTube recording link for AI Project Design and Execution Session 01.
 - [[course-07-session-02-materials-link]] — SharePoint materials folder link for AI Project Design and Execution Session 02.
-- [[course-07-session-02-summary]] — AI Project Design and Execution Session 02 stub
+- [[course-07-session-02-summary]] — AI Project Design and Execution Session 02: DBA thesis framework, strategic objectives workshop
 - [[course-07-session-02-youtube]] — YouTube recording link for AI Project Design and Execution Session 02.
 
 ---
@@ -294,6 +300,7 @@ updated: 2026-04-14
 
 - [[ai-in-business-functions]] — Cross-functional catalog of AI applications — compliance, finance, HR, customer experience, insurance
 - [[ai-paradigms]] — Taxonomy distinguishing Symbolic AI, Machine Learning, Agentic AI, and Composite AI
+- [[ai-project-strategy]] — AI Crush vs AI Strategy; 3-layer framework (Strategy→Decision→Workflow); why 60-65% of AI projects fail at planning
 - [[association-rule-mining]] — Unsupervised discovery of co-occurrence rules (if X then Y) in transaction data
 - [[clustering]] — Unsupervised grouping of observations by similarity; K-Means and agglomerative hierarchical
 - [[decision-trees]] — Tree-based supervised model splitting data on feature thresholds; interpretable

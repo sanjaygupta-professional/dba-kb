@@ -35,8 +35,13 @@ See [[course-04-session-01-20250920-overview|Dr. Pappu's live demo]] — a fraud
 
 For each application, a DBA candidate should be able to defend the paradigm choice and method — see [[concepts/doctoral-research-methodology|doctoral research methodology]].
 
+## AI strategy layer
+
+Knowing *where* AI applies in a business function is only half the picture. [[concepts/ai-project-strategy|AI Project Strategy]] (Course 07, Prof. Morty) provides the framework to move from a business function observation to a well-formed strategic objective with quantified value. Without this layer, "AI in compliance" remains AI Crush — enthusiasm without a plan. ^[inferred]
+
 ## Related
 
 - [[concepts/emerging-digital-technologies|Emerging digital technologies]] — the technology side of the pairing
 - [[concepts/ai-paradigms|AI paradigms]] — method-selection lens
 - [[doctoral-research-methodology|Doctoral Research Methodology]]
+- [[concepts/ai-project-strategy|AI Project Strategy]] — strategic planning framework for AI initiatives

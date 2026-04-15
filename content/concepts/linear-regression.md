@@ -40,6 +40,14 @@ Parameters (β coefficients) are estimated by minimising the **Sum of Squared Er
 - **Spurious regression** — high R² with no causal link; domain knowledge essential (e.g. stopping distance is quadratic, not linear, in speed)
 - **Categorical predictors** — encoded as k−1 binary dummy variables to avoid the dummy-variable trap
 
+## Worked Example: N95 Masks vs Sanitizers (Session 03)
+
+Two inventory lines with **identical means** (791.8 units/week) but very different spread:
+- N95 Masks: high variance → erratic, hard to stock
+- Sanitizers: low variance → stable, predictable
+
+The practical implication: R² alone doesn't tell you whether a regression model is operationally useful — distributional spread matters for decision-making under uncertainty. Before fitting a regression, always examine the distribution of the target variable.
+
 ## Business Applications
 
 Salary estimation, CLV prediction, supply chain demand forecasting, software cost estimation, advertising spend optimisation.
@@ -48,6 +56,7 @@ Salary estimation, CLV prediction, supply chain demand forecasting, software cos
 
 - [[ai-paradigms|AI Paradigms]] — linear regression sits in the supervised / regression block
 - [[logistic-regression|Logistic Regression]] — the classification analogue
+- [[course-04-session-03-session-03-27sep2025|Session 03]] — descriptive statistics intro, N95/Sanitizer example
 - [[course-04-session-05-20251004-linearregression|Session 05 Slides]] — full derivation and diagnostics
 - [[course-04-session-06-20251005-linearregression|Session 06 Slides]] — multiple regression, transformations, metrics
 - [[dr-sridhar-pappu|Dr. Sridhar Pappu]] — Course 04 instructor

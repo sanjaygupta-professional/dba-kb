@@ -32,6 +32,10 @@ In [[concepts/vibe-coding|the vibe-coding fraud-detection demo]], the Agentic AI
 
 Different business functions fit different paradigms — see [[concepts/ai-in-business-functions|AI in business functions]]. Research-grade work should justify paradigm selection with respect to the problem structure ^[inferred].
 
+## Paradigm selection in practice
+
+Paradigm choice is *part of* AI strategy, not the starting point. The [[concepts/ai-project-strategy|AI Project Strategy]] framework (Course 07) recommends removing the AI hat first to define strategy and decision logic — the paradigm surfaces naturally at Layer 2 once the business decision is clear. ^[inferred]
+
 ## Related
 
 - [[concepts/vibe-coding|Vibe coding]]
@@ -39,3 +43,4 @@ Different business functions fit different paradigms — see [[concepts/ai-in-bu
 - [[course-04-session-01-20250920-overview|Course_04 Session 01]]
 - [[ai-in-business-functions|AI in Business Functions]]
 - [[doctoral-research-methodology|Doctoral Research Methodology]]
+- [[concepts/ai-project-strategy|AI Project Strategy]] — strategic layer above paradigm selection

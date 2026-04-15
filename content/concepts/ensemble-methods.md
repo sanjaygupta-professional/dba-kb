@@ -50,5 +50,6 @@ Random Forest provides a natural **feature importance** ranking (by mean decreas
 
 - [[decision-trees|Decision Trees]] — base learner for both Random Forest and gradient boosting
 - [[ai-paradigms|AI Paradigms]] — ensemble methods sit in the supervised ML block
+- [[course-04-session-09-session-09-18oct2025|Session 09]] — bias-variance tradeoff introduced (SUB/COV mnemonics); motivation for why ensembles exist
 - [[course-04-session-13-20251101-clustering-ensemblemethods|Session 13 Slides]]
 - [[dr-sridhar-pappu|Dr. Sridhar Pappu]]

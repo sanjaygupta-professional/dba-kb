@@ -77,3 +77,12 @@ title: Wiki Log
 - [2026-04-13] ENRICH course-03-session-07 words=3404 source=transcript
 - [2026-04-13] ENRICH course-03-session-15 words=2665 source=transcript
 - [2026-04-13] ENRICH course-03-session-14 words=1487 source=transcript
+- [2026-04-14T00:00:00] INGEST source="Course_07_AI_Project_Design_Execution/Session_01+02/transcript.txt" pages_updated=2 pages_created=2 mode=append
+- [2026-04-14T00:00:00] RIPPLE pages_rippled=2 triggered_by=course-07-session-01-summary,course-07-session-02-summary updated=concepts/ai-paradigms.md,concepts/ai-in-business-functions.md
+- [2026-04-14T00:00:00] OVERVIEW_UPDATED pages=257 sources=246 gaps=0
+- [2026-04-14] INGEST source="Course_04/Session_03/Session-03.pdf" pages_updated=1 pages_created=0 mode=append type=slide_pdf
+- [2026-04-14] INGEST source="Course_04/Session_09/Session-09.pdf" pages_updated=1 pages_created=0 mode=append type=slide_pdf
+- [2026-04-14] INGEST source="Course_04/Session_10/Session-10.pdf" pages_updated=2 pages_created=0 mode=append type=slide_pdf
+- [2026-04-14] INGEST source="Course_04/Session_15/Session-15.pdf" pages_updated=1 pages_created=0 mode=append type=slide_pdf
+- [2026-04-14] RIPPLE pages_rippled=3 triggered_by=session-09,session-10,session-15 updated=concepts/decision-trees.md,concepts/linear-regression.md,concepts/ensemble-methods.md
+- [2026-04-14] OVERVIEW_UPDATED pages=257 sources=250 gaps=0
