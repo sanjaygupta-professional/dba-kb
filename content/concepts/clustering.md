@@ -21,6 +21,18 @@ An **unsupervised learning** technique that groups observations so that intra-cl
 
 Proposed: 1957. User specifies K (number of clusters).
 
+```mermaid
+flowchart TD
+    A([Dataset]) --> B["Initialise K centroids<br/>randomly"]
+    B --> C["Assign each point to<br/>nearest centroid<br/>Euclidean distance"]
+    C --> D["Recompute centroids<br/>as cluster means"]
+    D --> E{"Centroids<br/>changed?"}
+    E -->|Yes — iterate| C
+    E -->|No — converged| F(["K clusters ready"])
+
+    style F fill:#efe,stroke:#060
+```
+
 Algorithm:
 1. Initialise K centroids randomly
 2. Assign each point to nearest centroid (Euclidean distance by default)

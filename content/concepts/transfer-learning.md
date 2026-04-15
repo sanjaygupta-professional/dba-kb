@@ -21,6 +21,21 @@ provenance:
 
 A deep model trained on millions of images (e.g. ImageNet) has learned to detect edges, textures, shapes, and objects. These features transfer to a new image classification task even if the new classes are completely different. Fine-tuning the last few layers with new labelled data is far cheaper than training from scratch.
 
+## When to Use Which Mode
+
+```mermaid
+flowchart TD
+    A([New Task]) --> B["Start with pre-trained<br/>foundation model<br/>BERT · GPT · ResNet"]
+    B --> C{"Dataset size?<br/>Domain similarity?"}
+    C -->|"Small dataset<br/>Similar domain"| D["Feature Extraction<br/>Freeze all layers<br/>Train only the output head"]
+    C -->|"Larger dataset<br/>Different domain"| E["Fine-tuning<br/>Unfreeze top layers<br/>Low learning rate"]
+    D & E --> F(["Task-specific model<br/>ready for deployment"])
+
+    style D fill:#e8f4fd,stroke:#0066cc
+    style E fill:#fdf3e8,stroke:#cc6600
+    style F fill:#efe,stroke:#060
+```
+
 ## Two Modes
 
 | Mode | What you change | When to use |

@@ -21,6 +21,25 @@ A **supervised learning** algorithm that models the relationship between one or 
 
 Parameters (β coefficients) are estimated by minimising the **Sum of Squared Errors (SSE)** — ordinary least squares (OLS).
 
+## Modeling Workflow
+
+```mermaid
+flowchart TD
+    A([Raw Data]) --> B["Check correlation<br/>Pearson's r — direction & strength"]
+    B --> C["Fit model via OLS<br/>ŷ = β₀ + β₁x₁ + ... + βₙxₙ"]
+    C --> D{"R² acceptable?<br/>% variance explained"}
+    D -->|No| E(["Reconsider features<br/>or model form"])
+    D -->|Yes| F["Check p-values<br/>Predictor significance α = 0.05<br/>F-test for overall model"]
+    F --> G["Residuals diagnostics<br/>Normality · Homoscedasticity<br/>Cook's distance for outliers"]
+    G --> H{"Assumptions<br/>satisfied?"}
+    H -->|No| I(["Transform variables<br/>remove/combine predictors"])
+    H -->|Yes| J(["Model ready<br/>for inference"])
+
+    style J fill:#efe,stroke:#060
+    style E fill:#fee,stroke:#c00
+    style I fill:#fff8dc,stroke:#aa8800
+```
+
 ## Model Fit Diagnostics
 
 | Check | Metric | What it measures |

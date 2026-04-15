@@ -24,6 +24,24 @@ A four-way cut surfaced in [[course-04-session-01-20250920-overview|Course_04 Se
 | **Agentic AI** | LLM-driven planning + tool use | Open-ended tasks, research assistants |
 | **Composite AI** | Hybrid of the above, orchestrated per sub-problem | Real-world applications where no single approach fits |
 
+## Paradigm Selection Guide
+
+```mermaid
+flowchart TD
+    A([Business Problem]) --> B{"Is the decision rule<br/>explicit and codifiable?"}
+    B -->|Yes| C["Symbolic AI<br/>Rules · Logic · Knowledge Graphs"]
+    B -->|No| D{"Is labelled training<br/>data available?"}
+    D -->|Yes| E["Machine Learning<br/>Classification · Regression · Clustering"]
+    D -->|No| F{"Open-ended task?<br/>Needs planning + tool use?"}
+    F -->|Yes| G["Agentic AI<br/>LLM + tools + memory"]
+    F -->|"Multiple sub-problems<br/>with different needs"| H["Composite AI<br/>Orchestrate Symbolic + ML + Agentic"]
+
+    style C fill:#e8f4fd,stroke:#0066cc
+    style E fill:#e8f8e8,stroke:#006600
+    style G fill:#fdf3e8,stroke:#cc6600
+    style H fill:#f3e8fd,stroke:#6600cc
+```
+
 ## Applied example
 
 In [[concepts/vibe-coding|the vibe-coding fraud-detection demo]], the Agentic AI path delegated fraud detection to LLMs directly; the Composite AI path combined symbolic rules, ML classifiers, and GenAI. The deck compared the two paths on the same train/test split.

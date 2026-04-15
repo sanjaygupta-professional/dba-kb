@@ -21,6 +21,23 @@ A **supervised classification** algorithm. Linear regression fails for classific
 
 Parameters are estimated by **Maximum Likelihood Estimation (MLE)**, not least squares.
 
+## Prediction Pipeline
+
+```mermaid
+flowchart LR
+    A["Features<br/>x₁, x₂ … xₙ"] --> B["Linear combination<br/>z = β₀ + β₁x₁ + …"]
+    B --> C["Sigmoid function<br/>P = 1 ÷ (1 + e⁻ᶻ)"]
+    C --> D["Probability<br/>P ∈ [0, 1]"]
+    D --> E{"Decision threshold<br/>default = 0.5"}
+    E -->|"P ≥ threshold"| F(["Predict: Positive ✓"])
+    E -->|"P < threshold"| G(["Predict: Negative ✗"])
+
+    style F fill:#efe,stroke:#060
+    style G fill:#fee,stroke:#c00
+```
+
+**Threshold tuning:** lower it → catches more positives (↑ Recall, ↓ Precision). Raise it → fewer false alarms (↑ Precision, ↓ Recall). Tune for business context.
+
 ## Classification Metrics
 
 | Metric | Formula | Use when… |

@@ -17,6 +17,20 @@ provenance:
 
 An **unsupervised learning** technique for discovering frequently co-occurring items in transaction data. Output: if-then rules of the form `{antecedent} → {consequent}`. The canonical algorithm is **Apriori** (proposed 1994).
 
+## The Apriori Pipeline
+
+```mermaid
+flowchart LR
+    A([Transaction<br/>Database]) --> B["Mine frequent itemsets<br/>Support ≥ min_support<br/>Apriori pruning removes supersets"]
+    B --> C["Generate candidate rules<br/>{X} → {Y}"]
+    C --> D["Filter by Confidence<br/>P(Y | X) ≥ min_confidence"]
+    D --> E["Filter by Lift > 1<br/>Y is more likely given X<br/>than by chance"]
+    E --> F(["Actionable<br/>Association Rules"])
+
+    style A fill:#e8f4fd,stroke:#0066cc
+    style F fill:#efe,stroke:#060
+```
+
 ## Rule Anatomy
 
 ```

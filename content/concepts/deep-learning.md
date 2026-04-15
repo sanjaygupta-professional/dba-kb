@@ -34,6 +34,26 @@ provenance:
 | 2020 | 50M–200M | BERT, GPT-2 |
 | 2024 | 1B–3T | GPT-4, Gemini |
 
+## Architecture Taxonomy
+
+```mermaid
+flowchart TD
+    A([Deep Learning]) --> B["MLP<br/>Multi-Layer Perceptron"]
+    A --> C["CNN<br/>Convolutional Neural Network"]
+    A --> D["RNN · LSTM · GRU<br/>Recurrent Networks"]
+    A --> E["Transformer<br/>Attention mechanism"]
+    A --> F["Generative Models<br/>VAE · GAN · Diffusion"]
+
+    B -->|"Tabular structured data"| G(["General purpose"])
+    C -->|"Images · Video · Spatial"| H(["Computer vision"])
+    D -->|"Sequences · Time series"| I(["Sequential data<br/>(largely superseded)"])
+    E -->|"Text · Code · Multimodal"| J(["Modern LLMs — GPT, BERT"])
+    F -->|"Image/text synthesis"| K(["Content generation"])
+
+    style J fill:#fdf3e8,stroke:#cc6600
+    style K fill:#f3e8fd,stroke:#6600cc
+```
+
 ## Key Architectures
 
 - **MLP (Multi-Layer Perceptron)** — dense layers; general-purpose [[deep-learning|foundation]]

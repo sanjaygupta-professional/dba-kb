@@ -17,6 +17,21 @@ provenance:
 
 A workflow in which the developer specifies intent in natural language and an LLM-backed coding agent generates, runs, and iterates on the implementation. The term surfaces in [[course-04-session-01-20250920-overview|Dr. Sridhar Pappu's Course_04 kickoff]] as the mechanism behind a 1.5-hour fraud-detection prototype.
 
+## The Vibe Coding Loop
+
+```mermaid
+flowchart LR
+    A(["Developer intent<br/>in natural language"]) --> B["LLM Planner<br/>ChatGPT-o3"]
+    B --> C["Coding Agent<br/>Cline + Claude Sonnet"]
+    C --> D["Code generated<br/>& executed"]
+    D --> E{"Working?"}
+    E -->|No — iterate| C
+    E -->|"Yes"| F(["Artifact ready<br/>~1.5 hrs · ~$3.19"])
+
+    style A fill:#e8f4fd,stroke:#0066cc
+    style F fill:#efe,stroke:#060
+```
+
 ## Illustrative stack (Pappu demo)
 
 | Layer | Tool |

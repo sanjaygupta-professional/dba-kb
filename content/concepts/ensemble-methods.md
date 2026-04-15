@@ -17,6 +17,30 @@ provenance:
 
 The core insight: combining predictions from multiple diverse models almost always outperforms any single model. Two fundamental strategies:
 
+## Bagging vs Boosting at a Glance
+
+```mermaid
+flowchart TD
+    subgraph bag ["Bagging — Parallel (reduces Variance)"]
+        direction LR
+        T[Training Data] --> S1[Sample 1] & S2[Sample 2] & S3[Sample 3]
+        S1 --> M1[Tree 1]
+        S2 --> M2[Tree 2]
+        S3 --> M3[Tree 3]
+        M1 & M2 & M3 --> V[Vote / Average]
+        V --> P1([Prediction])
+    end
+
+    subgraph boo ["Boosting — Sequential (reduces Bias)"]
+        direction LR
+        D[Training Data] --> B1[Tree 1]
+        B1 -->|"Residuals"| B2[Tree 2]
+        B2 -->|"Residuals"| B3[Tree 3]
+        B3 --> S[Sum of Trees]
+        S --> P2([Prediction])
+    end
+```
+
 ## Bagging (Bootstrap Aggregating)
 
 Train models on different **bootstrap samples** (random with replacement) of the training data; combine via majority vote (classification) or averaging (regression).

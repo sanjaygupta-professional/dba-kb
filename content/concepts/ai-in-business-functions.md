@@ -18,6 +18,32 @@ provenance:
 
 Applied-AI landscape walked through in [[course-03-session-01-transcript|Course_03 Session 01]] and echoed in [[course-04-session-01-20250920-overview|Course_04 Session 01]]. Used to help DBA candidates locate a research topic in their industry.
 
+```mermaid
+mindmap
+  root((AI in Business<br/>Functions))
+    Compliance
+      Real-time regulatory monitoring
+      AI-driven compliance checks
+    Finance
+      Fraud detection
+      Cost-benefit analytics
+      Agentic AI for operations
+    HR
+      Skill-gap identification
+      Candidate recommendation
+      Training personalisation
+    Insurance
+      GenAI-assisted underwriting
+      Claim pattern analysis
+    Customer Experience
+      AR/VR interfaces
+      Personalised journeys
+    Operations
+      Predictive maintenance
+      Anomaly detection
+      Demand forecasting
+```
+
 | Function | Application examples |
 |---|---|
 | **Compliance** | Real-time monitoring of regulatory changes; AI-driven compliance checks |

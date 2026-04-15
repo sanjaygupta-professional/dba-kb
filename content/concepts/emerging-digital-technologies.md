@@ -17,6 +17,34 @@ provenance:
 
 The course category framing used in [[course-03-overview-emerging-digital-technologies|Course_03]]. Refers to the technology set that **complements rather than replaces AI** in industry use cases.
 
+## Technology Landscape
+
+```mermaid
+mindmap
+  root((Emerging Digital<br/>Technologies))
+    Connectivity
+      IoT — 6-layer stack
+      5G + Edge computing
+      Digital Twins — bidirectional sync
+    Compute
+      Cloud 1.0 / 2.0 / 3.0
+      HPC and GPU clusters
+      Quantum computing
+      Neuromorphic chips
+    Interface
+      AR / VR / MR / XR
+      Spatial computing
+      Metaverse platforms
+    Automation
+      RPA attended and unattended
+      Power Apps + Power Fx
+      Agentic AI workflows
+    Trust and Security
+      Blockchain and smart contracts
+      Cybersecurity — CIA Triad
+      Post-quantum cryptography
+```
+
 ## Scope (as surfaced in Session 01)
 
 - **IoT** — data acquisition at the edge, the subject of the next-day lecture.
