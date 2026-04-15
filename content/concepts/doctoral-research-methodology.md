@@ -70,13 +70,13 @@ Select based on career ambition:
 ```mermaid
 flowchart TD
     A([DBA Candidate]) --> B{Career ambition?}
-    B -->|Academic path| C["Mode 1: Research Paper\nDesign a course merging AI + domain\nApply for adjunct at 50% completion"]
-    B -->|Executive leader| D["Mode 2: Book\nConvert to podcast or video series\nBoards consume audio, not papers"]
-    B -->|Entrepreneur| E["Mode 3: Product / Startup\nBuild golden dataset benchmark\nOutperform GPT-4 in your domain"]
+    B -->|Academic path| C["Mode 1: Research Paper<br/>Design a course merging AI + domain<br/>Apply for adjunct at 50% completion"]
+    B -->|Executive leader| D["Mode 2: Book<br/>Convert to podcast or video series<br/>Boards consume audio, not papers"]
+    B -->|Entrepreneur| E["Mode 3: Product / Startup<br/>Build golden dataset benchmark<br/>Outperform GPT-4 in your domain"]
 
-    C --> F(["Adjunct faculty\n/ scientist track"])
-    D --> G(["Senior exec\n/ board track"])
-    E --> H(["Startup /\nventure track"])
+    C --> F(["Adjunct faculty<br/>/ scientist track"])
+    D --> G(["Senior exec<br/>/ board track"])
+    E --> H(["Startup /<br/>venture track"])
 
     style C fill:#e8f4fd,stroke:#0066cc
     style D fill:#e8f8e8,stroke:#006600

@@ -44,15 +44,15 @@ Splitting continues until a stopping criterion is met (max depth, min samples pe
 
 ```mermaid
 flowchart TD
-    A([Training Dataset]) --> B["Calculate Entropy H\nH = -Σ pᵢ · log₂(pᵢ)"]
-    B --> C["For each attribute:\nCalculate Information Gain\nIG = H_before − H_after"]
-    C --> D{High-cardinality\nattribute?}
-    D -->|"Many states\ne.g. Customer ID"| E["Use Gain Ratio\nIG ÷ IC(attribute)\nC4.5 algorithm"]
-    D -->|"Few states\ne.g. Car Type"| F["Use raw IG\nID3 algorithm"]
-    E & F --> G["Split on attribute\nwith highest score"]
-    G --> H{Pure leaf or\nstopping criterion?}
+    A([Training Dataset]) --> B["Calculate Entropy H<br/>H = -Σ pᵢ · log₂(pᵢ)"]
+    B --> C["For each attribute:<br/>Calculate Information Gain<br/>IG = H_before − H_after"]
+    C --> D{"High-cardinality<br/>attribute?"}
+    D -->|"Many states — e.g. Customer ID"| E["Use Gain Ratio<br/>IG ÷ IC(attribute)<br/>C4.5 algorithm"]
+    D -->|"Few states — e.g. Car Type"| F["Use raw IG<br/>ID3 algorithm"]
+    E & F --> G["Split on attribute<br/>with highest score"]
+    G --> H{"Pure leaf or<br/>stopping criterion?"}
     H -->|No| B
-    H -->|Yes| I(["Leaf node\nclass prediction"])
+    H -->|Yes| I(["Leaf node<br/>class prediction"])
 
     style E fill:#fff8dc,stroke:#aa8800
     style I fill:#efe,stroke:#060
