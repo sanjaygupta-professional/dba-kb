@@ -30,6 +30,7 @@ Phase 1 codifies the manual pattern and ships a working public site. Phases 2–
 4. Manual feedback workflow documented end-to-end (so Phase 2 has a clear spec to automate)
 5. Zero recurring cost (free tiers only)
 6. Zero Anthropic API key required for the autonomous parts (when they ship in Phase 2)
+7. Fork-ready architecture: anyone can copy the repo and run their own book site by editing only config files (see §15)
 
 ### Non-goals (deferred to later phases)
 
@@ -666,3 +667,33 @@ Minor refinements possible at user review time:
 - Google AI Studio (Gemini API): https://aistudio.google.com/
 - GitHub Pages with Actions deployment: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 - Claude Code Routines doc (researched, rejected for this use case): https://code.claude.com/docs/en/routines
+
+## 15. Design delta (2026-07-13): fork-ready architecture
+
+Approved during scope-clarification brainstorm. Phase 1 scope unchanged; three build rules added so the repo works as a template others can fork.
+
+### 15.1 Single config boundary
+
+Everything personal to the site owner lives in exactly two places:
+
+- `mkdocs.yml` — site name, site URL, GitHub repo URL
+- per-book `books/<slug>/book.yaml` — feedback email, NotebookLM URLs, Drive PDF URL
+
+Scripts (`build_index.py`, `new_book.py`, migration) read config only. **Zero hardcoded emails, usernames, or URLs in any `.py` file or workflow.** A forker edits two YAML files and nothing else.
+
+### 15.2 Content/engine separation
+
+- `books/<slug>/` = pure content — swappable per fork
+- `scripts/`, `.github/workflows/`, `overrides/`, `docs/` templates = engine — forkable as-is
+
+The engine never references `laws-of-human-nature` (or any book slug) by name. Acceptance check: `grep -r "laws-of-human-nature" scripts/ .github/` returns nothing.
+
+### 15.3 Roadmap (recorded, not built)
+
+| Phase | Added scope |
+|---|---|
+| 2 | Autonomous feedback loop (unchanged from §3) |
+| 3 | Fork documentation — "make your own book site" guide, <1 hour setup for a stranger |
+| 4+ | Cohort/study-group layer — shared reading schedules, discussion prompts, group flashcards |
+
+Community contributions to *this* site (PRs adding books) are explicitly out of scope at every phase — clarified 2026-07-13.

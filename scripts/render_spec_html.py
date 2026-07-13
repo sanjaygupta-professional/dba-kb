@@ -30,69 +30,60 @@ html_body = markdown.markdown(
 
 css = """
 :root {
-  --bg: #ffffff;
-  --fg: #1a202c;
-  --fg-muted: #4a5568;
-  --accent: #4f46e5;
-  --accent-bg: #eef2ff;
-  --border: #e2e8f0;
-  --code-bg: #f7fafc;
-  --code-fg: #2d3748;
-  --table-stripe: #f9fafb;
-  --pre-bg: #1a202c;
-  --pre-fg: #e2e8f0;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f172a;
-    --fg: #e2e8f0;
-    --fg-muted: #94a3b8;
-    --accent: #818cf8;
-    --accent-bg: #1e1b4b;
-    --border: #334155;
-    --code-bg: #1e293b;
-    --code-fg: #cbd5e1;
-    --table-stripe: #1e293b;
-    --pre-bg: #020617;
-    --pre-fg: #e2e8f0;
-  }
+  /* Anthropic / Claude design system — warm parchment palette */
+  --bg: #f5f4ed;           /* Parchment */
+  --fg: #141413;           /* Near Black */
+  --fg-muted: #5e5d59;     /* Olive Gray */
+  --accent: #c96442;       /* Terracotta */
+  --accent-bg: #faf9f5;    /* Ivory */
+  --border: #f0eee6;       /* Border Cream */
+  --border-warm: #e8e6dc;  /* Warm Sand */
+  --yellow: #9a6520;       /* Warm Amber */
+  --code-bg: #e8e6dc;
+  --code-fg: #141413;
+  --table-stripe: #faf9f5;
+  --pre-bg: #141413;
+  --pre-fg: #b0aea5;       /* Warm Silver on dark */
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--fg);
   max-width: 920px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 6rem;
-  line-height: 1.65;
-  font-size: 16px;
+  line-height: 1.6;
+  font-size: 15px;
 }
+h1, h2, h3 { font-family: Georgia, 'Anthropic Serif', serif; font-weight: 500; }
 h1 {
   font-size: 2.25rem;
   border-bottom: 3px solid var(--accent);
   padding-bottom: 0.75rem;
   margin-top: 0;
   margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--fg);
 }
 h2 {
   font-size: 1.6rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-warm);
   padding-bottom: 0.4rem;
   margin-top: 3rem;
   margin-bottom: 1rem;
   color: var(--accent);
-  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 h3 {
   font-size: 1.25rem;
   margin-top: 2rem;
   margin-bottom: 0.6rem;
-  color: var(--fg);
+  color: var(--fg-muted);
+  line-height: 1.3;
 }
-h4 { font-size: 1.05rem; margin-top: 1.5rem; color: var(--fg-muted); }
+h4 { font-size: 1.05rem; margin-top: 1.5rem; color: var(--yellow); }
 .headerlink { opacity: 0; margin-left: 0.5rem; text-decoration: none; color: var(--fg-muted); }
 h1:hover .headerlink, h2:hover .headerlink, h3:hover .headerlink, h4:hover .headerlink { opacity: 1; }
 p { margin: 0.75rem 0; }

@@ -10,6 +10,11 @@
 
 **Spec reference:** `docs/superpowers/specs/2026-05-25-learning-from-books-phase-1-design.md`
 
+> **Delta (2026-07-13) — fork-ready architecture (spec §15), binding on every task B–J:**
+> 1. All owner-specific values (emails, usernames, URLs) live only in `mkdocs.yml` and per-book `book.yaml`. Zero hardcoded personal values in any `.py` file or workflow.
+> 2. Engine (`scripts/`, `.github/workflows/`, `overrides/`) never references a book slug by name. Acceptance: `grep -r "laws-of-human-nature" scripts/ .github/` returns nothing.
+> 3. Reviewers must check both rules on every task.
+
 **Working directories:**
 - **New repo (Phases B–H + J)**: `~/learning-from-books/` (fresh clone after Task 6)
 - **Existing dba-site wiki (Phase I)**: `/home/sanjayg4/dba-site/` (for stub commit)
