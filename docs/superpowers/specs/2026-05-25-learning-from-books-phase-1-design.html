@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 05 25 Learning From Books Phase 1 Design</title>
+<style>
+:root {
+  /* Anthropic / Claude design system — warm parchment palette */
+  --bg: #f5f4ed;           /* Parchment */
+  --fg: #141413;           /* Near Black */
+  --fg-muted: #5e5d59;     /* Olive Gray */
+  --accent: #c96442;       /* Terracotta */
+  --accent-bg: #faf9f5;    /* Ivory */
+  --border: #f0eee6;       /* Border Cream */
+  --border-warm: #e8e6dc;  /* Warm Sand */
+  --yellow: #9a6520;       /* Warm Amber */
+  --code-bg: #e8e6dc;
+  --code-fg: #141413;
+  --table-stripe: #faf9f5;
+  --pre-bg: #141413;
+  --pre-fg: #b0aea5;       /* Warm Silver on dark */
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+  line-height: 1.6;
+  font-size: 15px;
+}
+h1, h2, h3 { font-family: Georgia, 'Anthropic Serif', serif; font-weight: 500; }
+h1 {
+  font-size: 2.25rem;
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 0.75rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  color: var(--fg);
+}
+h2 {
+  font-size: 1.6rem;
+  border-bottom: 1px solid var(--border-warm);
+  padding-bottom: 0.4rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+  line-height: 1.2;
+}
+h3 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  color: var(--fg-muted);
+  line-height: 1.3;
+}
+h4 { font-size: 1.05rem; margin-top: 1.5rem; color: var(--yellow); }
+.headerlink { opacity: 0; margin-left: 0.5rem; text-decoration: none; color: var(--fg-muted); }
+h1:hover .headerlink, h2:hover .headerlink, h3:hover .headerlink, h4:hover .headerlink { opacity: 1; }
+p { margin: 0.75rem 0; }
+a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+a:hover { border-bottom-style: solid; }
+code {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.88em;
+}
+pre {
+  background: var(--pre-bg);
+  color: var(--pre-fg);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 1rem 0;
+}
+pre code { background: transparent; color: inherit; padding: 0; }
+blockquote {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-bg);
+  padding: 0.6rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+  color: var(--fg-muted);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.92em;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+tr:nth-child(even) td { background: var(--table-stripe); }
+ul, ol { padding-left: 1.5rem; }
+li { margin: 0.35rem 0; }
+.task-list-item { list-style-type: none; margin-left: -1.5rem; }
+.task-list-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+  transform: scale(1.15);
+  accent-color: var(--accent);
+}
+hr {
+  border: 0;
+  border-top: 2px dashed var(--border);
+  margin: 2.5rem 0;
+}
+.toc {
+  background: var(--accent-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0 2.5rem;
+}
+.toc > ul { padding-left: 1.25rem; }
+.toc ul ul { padding-left: 1.25rem; margin: 0.2rem 0; }
+.toc a { border-bottom: none; }
+.toc a:hover { border-bottom: 1px dotted var(--accent); }
+.toctitle {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+.admonition {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-bg);
+  padding: 0.8rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.admonition-title {
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+  color: var(--accent);
+}
+@media (max-width: 640px) {
+  body { padding: 1.5rem 1rem 4rem; font-size: 15px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.35rem; }
+  pre { font-size: 0.78em; }
+  table { font-size: 0.85em; }
+  th, td { padding: 0.4rem 0.5rem; }
+}
+</style>
+</head>
+<body>
+<h1 id="learning-from-books-phase-1-design">Learning From Books — Phase 1 Design<a class="headerlink" href="#learning-from-books-phase-1-design" title="Permanent link">&para;</a></h1>
+<p><strong>Date</strong>: 2026-05-25
+<strong>Status</strong>: Approved for implementation planning
+<strong>Project codename</strong>: Learning From Books — A System That Improves With Your Feedback
+<strong>Scope</strong>: Phase 1 only (foundation + first book end-to-end + manual feedback)</p>
+<hr />
+<h2 id="1-context-motivation">1. Context &amp; motivation<a class="headerlink" href="#1-context-motivation" title="Permanent link">&para;</a></h2>
+<p>The user reads classic foundational books in systems thinking, neuroscience, psychology, economics, philosophy, history, strategy, and productivity. Manually building a NotebookLM-powered companion for each book is valuable but repetitive (proven by the existing Laws of Human Nature workflow).</p>
+<p>The goal is a productized, repeatable system:</p>
+<ul>
+<li>Each book gets a hub page with summary, slides, audio overview, infographics, and curated research</li>
+<li>Readers (including future-self) submit feedback by email</li>
+<li>The system improves over time without manual orchestration</li>
+<li>The whole thing runs on free tiers wherever possible</li>
+</ul>
+<p>Phase 1 codifies the manual pattern and ships a working public site. Phases 2–4 progressively automate it.</p>
+<h2 id="2-goals-non-goals">2. Goals &amp; non-goals<a class="headerlink" href="#2-goals-non-goals" title="Permanent link">&para;</a></h2>
+<h3 id="phase-1-goals">Phase 1 goals<a class="headerlink" href="#phase-1-goals" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Public GitHub Pages site at a stable URL hosting the Laws of Human Nature companion</li>
+<li>Repeatable per-book template (folder layout, metadata schema, page structure) any new book can plug into</li>
+<li>Gmail-based feedback intake with plus-addressing routing</li>
+<li>Manual feedback workflow documented end-to-end (so Phase 2 has a clear spec to automate)</li>
+<li>Zero recurring cost (free tiers only)</li>
+<li>Zero Anthropic API key required for the autonomous parts (when they ship in Phase 2)</li>
+<li>Fork-ready architecture: anyone can copy the repo and run their own book site by editing only config files (see §15)</li>
+</ol>
+<h3 id="non-goals-deferred-to-later-phases">Non-goals (deferred to later phases)<a class="headerlink" href="#non-goals-deferred-to-later-phases" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Phase 2: autonomous IMAP polling, Gemini intent classification, auto-commit, SMTP reply</li>
+<li>Phase 3: automated PDF discovery for a given book title</li>
+<li>Phase 4: auto-population of curated research (YouTube author talks, blog posts)</li>
+<li>Per-chapter infographics for Laws 2–18 (only Law 1 ships in Phase 1)</li>
+<li>Per-chapter slide URLs for all 18 chapters (only Law 1 required in Phase 1 to prove the pattern)</li>
+</ul>
+<h2 id="3-the-four-phases-system-context">3. The four phases (system context)<a class="headerlink" href="#3-the-four-phases-system-context" title="Permanent link">&para;</a></h2>
+<p>Phase 1 is the foundation; phases 2–4 plug into it.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 · Foundation</strong></td>
+<td>Repo, MkDocs site, GitHub Pages deploy, per-book template, manual feedback workflow, Laws of Human Nature seed</td>
+<td>This spec</td>
+</tr>
+<tr>
+<td><strong>2 · Closing the loop</strong></td>
+<td>IMAP polling, Gemini intent classifier, NotebookLM/Nano-Banana dispatch, auto-commit, SMTP reply</td>
+<td>Future spec</td>
+</tr>
+<tr>
+<td><strong>3 · Book discovery</strong></td>
+<td>Given a title, agent locates and ingests PDF autonomously</td>
+<td>Future spec</td>
+</tr>
+<tr>
+<td><strong>4 · Curated research</strong></td>
+<td>YouTube talks, blog posts, academic commentary aggregated per book</td>
+<td>Future spec</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-architectural-decisions">4. Architectural decisions<a class="headerlink" href="#4-architectural-decisions" title="Permanent link">&para;</a></h2>
+<p>Each decision was brainstormed; the chosen option is recorded here with the reasoning.</p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Chosen</th>
+<th>Rejected alternatives</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hosting strategy</td>
+<td>Single GitHub repo + GitHub Pages</td>
+<td>Per-book repo; integrate into existing dba-site Quartz wiki</td>
+<td>One repo keeps related content together; Pages avoids new infra; storage math fits comfortably (lean approach below)</td>
+</tr>
+<tr>
+<td>Storage strategy</td>
+<td>Lean — repo holds metadata + small markdown + compressed images; heavy assets externalized</td>
+<td>Store PDFs + audio + slides in repo</td>
+<td>PDFs go to Google Drive, audio stays in NotebookLM, slides are Google Slides URLs. ~3 MB/book → 300+ books fit in repo's 1 GB recommended cap</td>
+</tr>
+<tr>
+<td>Email routing</td>
+<td>One Gmail with plus-addressing per book</td>
+<td>One Gmail per book; one Gmail per category</td>
+<td>Single account avoids Google ToS risk; plus-addressing gives deterministic routing via <code>Delivered-To</code> header — no LLM needed to identify book</td>
+</tr>
+<tr>
+<td>Autonomous-loop LLM</td>
+<td>Gemini 2.5 Flash (free tier, 1500 req/day)</td>
+<td>Claude Haiku via Anthropic API; Claude Routines</td>
+<td>Zero Anthropic API key; one free Google AI Studio key suffices; Max subscription stays for user's manual work</td>
+</tr>
+<tr>
+<td>Automation spine</td>
+<td>GitHub Actions cron (free, 5-min min interval)</td>
+<td>Claude Code Routines (Pro/Max only, 15/day cap, 1-hour min interval)</td>
+<td>Free, more responsive, integrates with existing repo, secrets storage built-in</td>
+</tr>
+<tr>
+<td>Site generator</td>
+<td>MkDocs Material</td>
+<td>Quartz; Astro+Starlight; Jekyll</td>
+<td>Book-shaped UX (sections = books, pages = chapters); built-in search; iframe embeds work out-of-box; small config surface</td>
+</tr>
+<tr>
+<td>Flashcards</td>
+<td>NotebookLM-hosted (link/embed)</td>
+<td>Build static markdown Q/A; build Anki export</td>
+<td>NotebookLM already generates these; matches the "externalize heavy artifacts" pattern</td>
+</tr>
+<tr>
+<td>Per-chapter slide rendering</td>
+<td>iframe embed of Google Slides <code>/embed</code> URL</td>
+<td>Static PNG export per slide</td>
+<td>iframe stays in sync with the source deck; no rebuild on slide edits; works on mobile</td>
+</tr>
+<tr>
+<td>Site categories taxonomy (initial)</td>
+<td>8: Psychology, Systems Thinking, Neuroscience, Economics, Philosophy, History, Strategy, Productivity</td>
+<td>Tight list of 4; freeform tags</td>
+<td>Seeds the user's actual reading domains; can grow on demand</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-token-optimized-architecture">5. Token-optimized architecture<a class="headerlink" href="#5-token-optimized-architecture" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Tool</th>
+<th>Cost</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Audio overview (Deep Dive podcast)</td>
+<td>NotebookLM</td>
+<td>Free</td>
+<td>Native NotebookLM output, source-grounded</td>
+</tr>
+<tr>
+<td>Slide decks (condensed + detailed)</td>
+<td>NotebookLM</td>
+<td>Free</td>
+<td>Exports as Google Slides URL</td>
+</tr>
+<tr>
+<td>Markdown chapter summaries</td>
+<td>NotebookLM → export</td>
+<td>Free</td>
+<td>Same pattern as existing Laws of Human Nature</td>
+</tr>
+<tr>
+<td>Flashcards per chapter</td>
+<td>NotebookLM Flashcards</td>
+<td>Free</td>
+<td>Hosted in NotebookLM, linked from chapter page</td>
+</tr>
+<tr>
+<td>Infographics</td>
+<td>Nano Banana (Gemini image)</td>
+<td>Free</td>
+<td>Already wired in user's plugin set</td>
+</tr>
+<tr>
+<td>Curated research (YouTube, blogs)</td>
+<td>Gemini 2.5 Flash + Firecrawl</td>
+<td>Free tiers</td>
+<td>Bulk scrape + summarize</td>
+</tr>
+<tr>
+<td>Email feedback parsing → intent (Phase 2)</td>
+<td>Gemini 2.5 Flash</td>
+<td>Free (1500 req/day)</td>
+<td>Structured output, no Anthropic key needed</td>
+</tr>
+<tr>
+<td>Orchestration (route + dispatch, Phase 2)</td>
+<td>Gemini 2.5 Flash</td>
+<td>Free</td>
+<td>Decision tree fits easily in Flash's capabilities</td>
+</tr>
+<tr>
+<td>User's manual work (this spec, future builds)</td>
+<td>Claude Code on Max subscription</td>
+<td>Included in Max</td>
+<td>Stays with user; not in autonomous loop</td>
+</tr>
+</tbody>
+</table>
+<p>Steady-state operational cost: <strong>~$0/month</strong> (all free tiers, no Anthropic API key required for autonomous flow).</p>
+<h2 id="6-repository-layout">6. Repository layout<a class="headerlink" href="#6-repository-layout" title="Permanent link">&para;</a></h2>
+<p>The new repo (separate from dba-site) is named <strong><code>learning-from-books-system-that-improves-with-your-feedback</code></strong>.</p>
+<div class="highlight"><pre><span></span><code>learning-from-books-system-that-improves-with-your-feedback/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml              # MkDocs build + Pages deploy
+├── docs/                           # MkDocs source
+│   ├── index.md                    # AUTO-GENERATED master grid
+│   ├── stylesheets/
+│   │   └── extra.css               # book cards + slides embed
+│   └── books/
+│       └── laws-of-human-nature/
+│           ├── .pages              # awesome-pages nav config
+│           ├── book.yaml           # metadata (excluded from build)
+│           ├── index.md            # book landing page
+│           ├── chapters/
+│           │   ├── 01-irrationality.md
+│           │   ├── 02-narcissism.md
+│           │   └── ...
+│           ├── infographics/
+│           │   ├── cover.jpg
+│           │   ├── 01-start.png
+│           │   └── 01-end.png
+│           ├── research/
+│           │   ├── author-talks.md
+│           │   ├── blog-posts.md
+│           │   └── academic-commentary.md
+│           └── feedback/
+│               └── log.md          # excluded from build
+├── scripts/
+│   ├── build_index.py              # books → docs/index.md
+│   ├── migrate_laws_of_human_nature.py
+│   └── new_book.py                 # scaffold new book skeleton
+├── mkdocs.yml
+├── requirements.txt
+├── feedback-protocol.md
+└── README.md
+</code></pre></div>
+<h3 id="per-book-metadata-schema-bookyaml">Per-book metadata schema (<code>book.yaml</code>)<a class="headerlink" href="#per-book-metadata-schema-bookyaml" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">Laws</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Human</span><span class="nv"> </span><span class="s">Nature&quot;</span>
+<span class="nt">author</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Robert</span><span class="nv"> </span><span class="s">Greene&quot;</span>
+<span class="nt">year</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2018</span>
+<span class="nt">slug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;laws-of-human-nature&quot;</span>
+<span class="nt">categories</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">psychology</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">behavior</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">leadership</span><span class="p p-Indicator">]</span>
+<span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;active&quot;</span><span class="w">               </span><span class="c1"># active | draft | archived</span>
+<span class="nt">chapters_total</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18</span>
+<span class="nt">cover</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;infographics/cover.jpg&quot;</span>
+<span class="nt">last_updated</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2026-05-25&quot;</span>
+
+<span class="c1"># external artifact URLs (all FREE platforms)</span>
+<span class="nt">notebooklm_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://notebooklm.google.com/notebook/&lt;id&gt;&quot;</span>
+<span class="nt">notebooklm_flashcards_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://notebooklm.google.com/notebook/&lt;id&gt;/flashcards&quot;</span>
+<span class="nt">audio_overview_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://notebooklm.google.com/notebook/&lt;id&gt;/audio&quot;</span>
+<span class="nt">slides_condensed_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://docs.google.com/presentation/d/&lt;id&gt;&quot;</span>
+<span class="nt">slides_detailed_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://docs.google.com/presentation/d/&lt;id&gt;&quot;</span>
+<span class="nt">drive_pdf_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://drive.google.com/file/d/&lt;id&gt;&quot;</span>
+
+<span class="c1"># feedback routing</span>
+<span class="nt">feedback_email</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;learningfrombooks.feedback+lawsofhumannature@gmail.com&quot;</span>
+
+<span class="c1"># per-chapter inventory (for index page indicators + nav)</span>
+<span class="nt">chapters</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">Law</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Irrationality&quot;</span>
+<span class="w">    </span><span class="nt">slug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;01-irrationality&quot;</span>
+<span class="w">    </span><span class="nt">slides_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://docs.google.com/presentation/d/&lt;id&gt;&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">num</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">Law</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Narcissism&quot;</span>
+<span class="w">    </span><span class="nt">slug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;02-narcissism&quot;</span>
+<span class="w">    </span><span class="nt">slides_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://docs.google.com/presentation/d/&lt;id&gt;&quot;</span>
+<span class="w">  </span><span class="c1"># ...18 total</span>
+</code></pre></div>
+<h3 id="per-chapter-file-format">Per-chapter file format<a class="headerlink" href="#per-chapter-file-format" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>---
+chapter: 1
+title: &quot;The Law of Irrationality&quot;
+slides_url: &quot;https://docs.google.com/presentation/d/&lt;id&gt;&quot;
+notebooklm_section_url: &quot;https://notebooklm.google.com/notebook/&lt;id&gt;#chapter-1&quot;
+<span class="gu">key_concepts: [bias, emotion, self-awareness]</span>
+<span class="gu">---</span>
+
+<span class="gh"># Chapter 1 — The Law of Irrationality</span>
+
+<span class="k">&gt; </span><span class="ge">Short pull-quote or chapter thesis.</span>
+
+<span class="gu">## Slide Deck</span>
+
+&lt;div class=&quot;slides-embed&quot;&gt;
+  &lt;iframe src=&quot;https://docs.google.com/presentation/d/&lt;id&gt;/embed?start=false&amp;loop=false&amp;delayms=3000&quot;
+          frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+<span class="gu">## Summary</span>
+
+Chapter summary (synthesized from NotebookLM).
+
+<span class="gu">## Study Guide</span>
+
+(Merged from NotebookLM-generated study guide.)
+
+<span class="gu">## Key Takeaways</span>
+
+<span class="k">-</span><span class="w"> </span>...
+
+<span class="gu">## Listen</span>
+
+[<span class="nt">Audio overview for this chapter →</span>](<span class="na">&lt;notebooklm_section_url&gt;</span>)
+</code></pre></div>
+<h2 id="7-mkdocs-configuration">7. MkDocs configuration<a class="headerlink" href="#7-mkdocs-configuration" title="Permanent link">&para;</a></h2>
+<p><code>mkdocs.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Learning</span><span class="nv"> </span><span class="s">From</span><span class="nv"> </span><span class="s">Books&quot;</span>
+<span class="nt">site_description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">System</span><span class="nv"> </span><span class="s">That</span><span class="nv"> </span><span class="s">Improves</span><span class="nv"> </span><span class="s">With</span><span class="nv"> </span><span class="s">Your</span><span class="nv"> </span><span class="s">Feedback&quot;</span>
+<span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://&lt;user&gt;.github.io/learning-from-books-system-that-improves-with-your-feedback/&quot;</span>
+<span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://github.com/&lt;user&gt;/learning-from-books-system-that-improves-with-your-feedback&quot;</span>
+<span class="nt">repo_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;GitHub&quot;</span>
+
+<span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">material</span>
+<span class="w">  </span><span class="nt">palette</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">media</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;(prefers-color-scheme:</span><span class="nv"> </span><span class="s">light)&quot;</span>
+<span class="w">      </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="w">      </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">indigo</span>
+<span class="w">      </span><span class="nt">toggle</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> icon</span><span class="p">:</span><span class="w"> </span><span class="nv">material/brightness-7</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">Switch to dark</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">media</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;(prefers-color-scheme:</span><span class="nv"> </span><span class="s">dark)&quot;</span>
+<span class="w">      </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slate</span>
+<span class="w">      </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">indigo</span>
+<span class="w">      </span><span class="nt">toggle</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> icon</span><span class="p">:</span><span class="w"> </span><span class="nv">material/brightness-4</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">Switch to light</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">features</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.instant</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.tabs</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.sections</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.top</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search.suggest</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search.highlight</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content.code.copy</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">toc.follow</span>
+
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">awesome-pages</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tags</span>
+
+<span class="nt">markdown_extensions</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admonition</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pymdownx.details</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pymdownx.superfences</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pymdownx.tabbed</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> alternate_style</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">attr_list</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md_in_html</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">toc</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> permalink</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="w"> </span><span class="p p-Indicator">}</span>
+
+<span class="nt">extra_css</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stylesheets/extra.css</span>
+
+<span class="nt">extra</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">social</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fontawesome/solid/envelope</span>
+<span class="w">      </span><span class="nt">link</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mailto:learningfrombooks.feedback@gmail.com</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Send feedback</span>
+
+<span class="nt">exclude_docs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">  </span><span class="no">**/book.yaml</span>
+<span class="w">  </span><span class="no">**/feedback/log.md</span>
+</code></pre></div>
+<h3 id="master-index-docsindexmd-auto-generated">Master index (<code>docs/index.md</code>) — auto-generated<a class="headerlink" href="#master-index-docsindexmd-auto-generated" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="gh"># Learning From Books</span>
+
+A continuous improvement system for deep reading. Send feedback to any book&#39;s email — the system improves with your input.
+
+&lt;div class=&quot;book-grid&quot;&gt;
+&lt;a class=&quot;book-card&quot; href=&quot;books/laws-of-human-nature/&quot;&gt;
+  &lt;img src=&quot;books/laws-of-human-nature/infographics/cover.jpg&quot; alt=&quot;&quot;&gt;
+  &lt;div class=&quot;card-meta&quot;&gt;
+    &lt;h3&gt;The Laws of Human Nature&lt;/h3&gt;
+    &lt;p class=&quot;author&quot;&gt;Robert Greene · 2018&lt;/p&gt;
+    &lt;div class=&quot;tags&quot;&gt;&lt;span&gt;psychology&lt;/span&gt;&lt;span&gt;behavior&lt;/span&gt;&lt;/div&gt;
+    &lt;p class=&quot;status&quot;&gt;18 chapters · updated 2026-05-25&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+
+<span class="gu">## Browse by category</span>
+
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Psychology</span>](<span class="na">tags.md#psychology</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Systems Thinking</span>](<span class="na">tags.md#systems-thinking</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Neuroscience</span>](<span class="na">tags.md#neuroscience</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Economics</span>](<span class="na">tags.md#economics</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Philosophy</span>](<span class="na">tags.md#philosophy</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">History</span>](<span class="na">tags.md#history</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Strategy</span>](<span class="na">tags.md#strategy</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Productivity</span>](<span class="na">tags.md#productivity</span>)
+
+<span class="gu">## Request a book</span>
+
+Send the title + author to <span class="gs">**[learningfrombooks.feedback+request@gmail.com](mailto:learningfrombooks.feedback+request@gmail.com)**</span>.
+</code></pre></div>
+<h3 id="scriptsbuild_indexpy-behavior"><code>scripts/build_index.py</code> behavior<a class="headerlink" href="#scriptsbuild_indexpy-behavior" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Walk <code>docs/books/*/book.yaml</code></li>
+<li>Sort by <code>last_updated</code> descending</li>
+<li>Render Jinja2 template → <code>docs/index.md</code></li>
+<li>Collect unique categories → write/update <code>docs/tags.md</code></li>
+<li>Idempotent: re-running produces identical output if no <code>book.yaml</code> changed</li>
+</ul>
+<h3 id="extracss-key-styles"><code>extra.css</code> (key styles)<a class="headerlink" href="#extracss-key-styles" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="p">.</span><span class="nc">book-grid</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="k">grid</span><span class="p">;</span>
+<span class="w">  </span><span class="k">grid-template-columns</span><span class="p">:</span><span class="w"> </span><span class="nf">repeat</span><span class="p">(</span><span class="kc">auto</span><span class="nv">-fill</span><span class="p">,</span><span class="w"> </span><span class="nf">minmax</span><span class="p">(</span><span class="mi">220</span><span class="kt">px</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="n">fr</span><span class="p">));</span>
+<span class="w">  </span><span class="k">gap</span><span class="p">:</span><span class="w"> </span><span class="mf">1.25</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">rem</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">book-card</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">block</span><span class="p">;</span><span class="w"> </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="k">overflow</span><span class="p">:</span><span class="w"> </span><span class="kc">hidden</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--md-default-bg-color</span><span class="p">);</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">inherit</span><span class="p">;</span>
+<span class="w">  </span><span class="k">text-decoration</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span><span class="w"> </span><span class="k">box-shadow</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">2</span><span class="kt">px</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="w"> </span><span class="nb">rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">.08</span><span class="p">);</span>
+<span class="w">  </span><span class="k">transition</span><span class="p">:</span><span class="w"> </span><span class="k">transform</span><span class="w"> </span><span class="mf">.15</span><span class="kt">s</span><span class="p">,</span><span class="w"> </span><span class="k">box-shadow</span><span class="w"> </span><span class="mf">.15</span><span class="kt">s</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">book-card</span><span class="p">:</span><span class="nd">hover</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">translateY</span><span class="p">(</span><span class="mi">-2</span><span class="kt">px</span><span class="p">);</span><span class="w"> </span><span class="k">box-shadow</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">6</span><span class="kt">px</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="w"> </span><span class="nb">rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">.12</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">.</span><span class="nc">book-card</span><span class="w"> </span><span class="nt">img</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span><span class="w"> </span><span class="k">aspect-ratio</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="k">object-fit</span><span class="p">:</span><span class="w"> </span><span class="kc">cover</span><span class="p">;</span><span class="w"> </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">block</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">.</span><span class="nc">card-meta</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mf">.75</span><span class="kt">rem</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">.</span><span class="nc">card-meta</span><span class="w"> </span><span class="nt">h3</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">.25</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">.</span><span class="nc">author</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.85</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--md-default-fg-color--light</span><span class="p">);</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">.</span><span class="nc">tags</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mf">.5</span><span class="kt">rem</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span><span class="w"> </span><span class="k">gap</span><span class="p">:</span><span class="w"> </span><span class="mf">.4</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">flex-wrap</span><span class="p">:</span><span class="w"> </span><span class="kc">wrap</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">.</span><span class="nc">tags</span><span class="w"> </span><span class="nt">span</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--md-accent-fg-color--transparent</span><span class="p">);</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--md-accent-fg-color</span><span class="p">);</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mf">.15</span><span class="kt">rem</span><span class="w"> </span><span class="mf">.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">.75</span><span class="kt">rem</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">slides-embed</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">relative</span><span class="p">;</span><span class="w"> </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mf">56.25</span><span class="kt">%</span><span class="p">;</span><span class="w"> </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">overflow</span><span class="p">:</span><span class="w"> </span><span class="kc">hidden</span><span class="p">;</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">rem</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">slides-embed</span><span class="w"> </span><span class="nt">iframe</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span><span class="w"> </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">left</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span><span class="w"> </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span><span class="w"> </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="per-book-pages-awesome-pages-plugin">Per-book <code>.pages</code> (awesome-pages plugin)<a class="headerlink" href="#per-book-pages-awesome-pages-plugin" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;The</span><span class="nv"> </span><span class="s">Laws</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Human</span><span class="nv"> </span><span class="s">Nature&quot;</span>
+<span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chapters</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">research</span>
+</code></pre></div>
+<h2 id="8-github-actions-deployment">8. GitHub Actions deployment<a class="headerlink" href="#8-github-actions-deployment" title="Permanent link">&para;</a></h2>
+<p><code>.github/workflows/deploy.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build and deploy site</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
+
+<span class="nt">permissions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<span class="w">  </span><span class="nt">pages</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+<span class="w">  </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span>
+
+<span class="nt">concurrency</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pages</span>
+<span class="w">  </span><span class="nt">cancel-in-progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">build-deploy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.12&quot;</span>
+<span class="w">          </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Regenerate master index</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python scripts/build_index.py</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build MkDocs site</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs build --strict</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/upload-pages-artifact@v3</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">site</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deployment</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/deploy-pages@v4</span>
+</code></pre></div>
+<p><code>requirements.txt</code>:</p>
+<div class="highlight"><pre><span></span><code>mkdocs==1.6.1
+mkdocs-material==9.5.49
+mkdocs-awesome-pages-plugin==2.9.3
+pyyaml==6.0.2
+jinja2==3.1.4
+</code></pre></div>
+<p>One-time manual setup: GitHub repo → Settings → Pages → Source = "GitHub Actions" (not "Deploy from branch"). No <code>gh-pages</code> branch needed.</p>
+<h3 id="build-latency-budget-states-phase-2-expectations">Build latency budget (states Phase 2 expectations)<a class="headerlink" href="#build-latency-budget-states-phase-2-expectations" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Push to <code>main</code> → Pages live</td>
+<td>45–90 seconds typical</td>
+</tr>
+<tr>
+<td>GitHub Actions scheduled jobs</td>
+<td>5–30 minute drift possible at peak</td>
+</tr>
+<tr>
+<td>Phase 2 feedback SLA target</td>
+<td>Acknowledged within 1 hour, fulfilled within 4 hours</td>
+</tr>
+<tr>
+<td>Phase 1 (manual) SLA target</td>
+<td>Acknowledged within 24 hours, fulfilled within 48 hours</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-phase-1-manual-feedback-workflow">9. Phase 1 manual feedback workflow<a class="headerlink" href="#9-phase-1-manual-feedback-workflow" title="Permanent link">&para;</a></h2>
+<p>The manual workflow is intentional: it codifies what Phase 2 will automate.</p>
+<h3 id="feedback-address-pattern">Feedback address pattern<a class="headerlink" href="#feedback-address-pattern" title="Permanent link">&para;</a></h3>
+<p><code>learningfrombooks.feedback+&lt;bookslug&gt;@gmail.com</code> (plus-addressing). Examples:</p>
+<ul>
+<li><code>learningfrombooks.feedback+lawsofhumannature@gmail.com</code> → Laws of Human Nature</li>
+<li><code>learningfrombooks.feedback+request@gmail.com</code> → new book request (reserved slug)</li>
+<li><code>learningfrombooks.feedback+meta@gmail.com</code> → site-level feedback (reserved slug)</li>
+</ul>
+<p>All deliver to one inbox; Gmail preserves the tag in the <code>Delivered-To</code> header for machine-readable routing.</p>
+<h3 id="accepted-feedback-intents-phase-1-taxonomy">Accepted feedback intents (Phase 1 taxonomy)<a class="headerlink" href="#accepted-feedback-intents-phase-1-taxonomy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>Example subject</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>more-flashcards</code></td>
+<td>"More flashcards on chapter 3"</td>
+<td>Regenerate flashcards in NotebookLM</td>
+</tr>
+<tr>
+<td><code>infographic</code></td>
+<td>"Infographic for Law 7"</td>
+<td>Generate via Nano Banana</td>
+</tr>
+<tr>
+<td><code>summary-rephrase</code></td>
+<td>"Make chapter 2 summary simpler"</td>
+<td>Re-prompt NotebookLM with style hint</td>
+</tr>
+<tr>
+<td><code>audio-language</code></td>
+<td>"Audio overview in Hindi"</td>
+<td>NotebookLM language switch + regenerate</td>
+</tr>
+<tr>
+<td><code>slide-rework</code></td>
+<td>"Condensed deck too dense"</td>
+<td>Regenerate slides with new outline</td>
+</tr>
+<tr>
+<td><code>research-add</code></td>
+<td>"Found an author talk: <URL>"</td>
+<td>Append to <code>research/author-talks.md</code></td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>"Typo in chapter 5, paragraph 4"</td>
+<td>Fix in markdown, commit</td>
+</tr>
+<tr>
+<td><code>general</code></td>
+<td>freeform</td>
+<td>Manual judgment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="manual-workflow-7-steps-performed-by-the-user">Manual workflow (7 steps, performed by the user)<a class="headerlink" href="#manual-workflow-7-steps-performed-by-the-user" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Receive</strong> — Gmail notifies of new mail at <code>learningfrombooks.feedback+&lt;slug&gt;@gmail.com</code></li>
+<li><strong>Classify</strong> — read subject + body; tag with one taxonomy intent above</li>
+<li><strong>Act</strong> — open NotebookLM / Nano Banana / chapter file and generate or edit the artifact</li>
+<li><strong>Place</strong> — commit the new/changed file under the correct subfolder of <code>docs/books/&lt;slug&gt;/</code></li>
+<li><strong>Log</strong> — append a row to <code>docs/books/&lt;slug&gt;/feedback/log.md</code>:</li>
+</ol>
+<p><div class="highlight"><pre><span></span><code><span class="gu">## 2026-05-26 — chapter-3 flashcards expanded</span>
+<span class="k">-</span><span class="w"> </span><span class="gs">**From**</span>: reader@example.com
+<span class="k">-</span><span class="w"> </span><span class="gs">**Intent**</span>: more-flashcards
+<span class="k">-</span><span class="w"> </span><span class="gs">**Action**</span>: Regenerated NotebookLM flashcards for chapter 3, updated URL in book.yaml
+<span class="k">-</span><span class="w"> </span><span class="gs">**Commit**</span>: &lt;sha&gt;
+<span class="k">-</span><span class="w"> </span><span class="gs">**Reply sent**</span>: yes
+</code></pre></div>
+6. <strong>Push</strong> — <code>git push</code> → GitHub Action deploys → live in ~90 seconds
+7. <strong>Reply</strong> — respond to the original email with a Pages URL pointing to the new artifact</p>
+<h3 id="feedback-protocolmd-committed-at-repo-root"><code>feedback-protocol.md</code> (committed at repo root)<a class="headerlink" href="#feedback-protocolmd-committed-at-repo-root" title="Permanent link">&para;</a></h3>
+<p>A single doc explains the above to: readers (what to send), future-self (how to act), the Phase 2 spec author (reference implementation).</p>
+<p>Contents:
+- The 8 intent types + what each triggers
+- The 7-step manual workflow
+- Sample email templates readers can copy
+- The log format shown above</p>
+<h2 id="10-seed-migration-laws-of-human-nature">10. Seed migration: Laws of Human Nature<a class="headerlink" href="#10-seed-migration-laws-of-human-nature" title="Permanent link">&para;</a></h2>
+<h3 id="existing-content-inventory">Existing content inventory<a class="headerlink" href="#existing-content-inventory" title="Permanent link">&para;</a></h3>
+<p>Located in <code>dba-site/content/references/laws-of-human-nature/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Asset</th>
+<th>Count</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chapter files (<code>law-01-…</code> to <code>law-18-…</code>)</td>
+<td>18</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Study guides (NotebookLM-generated)</td>
+<td>18</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Index files</td>
+<td>2</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>Infographics</td>
+<td>2 PNGs</td>
+<td>Only Law 1 START + END; Laws 2–18 pending</td>
+</tr>
+<tr>
+<td>NotebookLM notebook</td>
+<td>1</td>
+<td>Exists, URL captured</td>
+</tr>
+<tr>
+<td>Per-law slide decks (in NotebookLM)</td>
+<td>18</td>
+<td>URLs need extraction</td>
+</tr>
+<tr>
+<td>Audio overview</td>
+<td>1</td>
+<td>URL needs extraction</td>
+</tr>
+<tr>
+<td>Cover image</td>
+<td>none</td>
+<td>Generate via Nano Banana</td>
+</tr>
+</tbody>
+</table>
+<h3 id="source-target-mapping">Source → target mapping<a class="headerlink" href="#source-target-mapping" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>content/references/laws-of-human-nature/
+  index.md                                    → docs/books/laws-of-human-nature/index.md (rewritten as book landing)
+  law-01-irrationality.md                     → docs/books/laws-of-human-nature/chapters/01-irrationality.md
+  ...
+  law-18-death-denial.md                      → docs/books/laws-of-human-nature/chapters/18-death-denial.md
+  study-guides/law-NN-name-study-guide.md     → MERGED into matching chapter file as &quot;## Study Guide&quot; section
+  infographics/law-01-irrationality-start.png → docs/books/laws-of-human-nature/infographics/01-start.png
+  infographics/law-01-irrationality-end.png   → docs/books/laws-of-human-nature/infographics/01-end.png
+</code></pre></div>
+<h3 id="new-files-dont-exist-in-source">New files (don't exist in source)<a class="headerlink" href="#new-files-dont-exist-in-source" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>docs/books/laws-of-human-nature/
+  book.yaml
+  .pages
+  feedback/log.md
+  research/author-talks.md         (stub)
+  research/blog-posts.md           (stub)
+  research/academic-commentary.md  (stub)
+  infographics/cover.jpg           (Nano Banana generated)
+</code></pre></div>
+<h3 id="migration-script">Migration script<a class="headerlink" href="#migration-script" title="Permanent link">&para;</a></h3>
+<p><code>scripts/migrate_laws_of_human_nature.py</code> — one-shot, idempotent:</p>
+<ol>
+<li>Read source dir from CLI arg (path to <code>dba-site/content/references/laws-of-human-nature/</code>)</li>
+<li>For each <code>law-NN-*.md</code>:</li>
+<li>Strip Quartz-specific frontmatter (<code>tags</code>, <code>category</code>)</li>
+<li>Add MkDocs-compatible frontmatter (<code>chapter</code>, <code>title</code>, <code>slides_url</code> placeholder)</li>
+<li>Read matching study guide file</li>
+<li>Append as <code>## Study Guide</code> section</li>
+<li>Append <code>## Slide Deck</code> section with iframe placeholder</li>
+<li>Write to <code>docs/books/laws-of-human-nature/chapters/NN-slug.md</code></li>
+<li>Copy infographics, renaming (<code>law-01-irrationality-start.png</code> → <code>01-start.png</code>)</li>
+<li>Generate <code>book.yaml</code> with all known metadata + URL placeholders</li>
+<li>Write <code>.pages</code>, stub <code>research/</code>, empty <code>feedback/log.md</code></li>
+<li>Print summary: files written, URL placeholders that need manual fill-in</li>
+</ol>
+<h3 id="manual-fill-in-checklist-after-migration-script-runs">Manual fill-in checklist (after migration script runs)<a class="headerlink" href="#manual-fill-in-checklist-after-migration-script-runs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>notebooklm_url</code></td>
+<td>Open existing notebook → copy URL</td>
+</tr>
+<tr>
+<td><code>notebooklm_flashcards_url</code></td>
+<td>NotebookLM Studio → Flashcards → copy URL</td>
+</tr>
+<tr>
+<td><code>audio_overview_url</code></td>
+<td>NotebookLM Studio → Audio Overview → copy URL</td>
+</tr>
+<tr>
+<td><code>slides_condensed_url</code></td>
+<td>Generate in NotebookLM if missing, share=anyone-with-link, copy URL</td>
+</tr>
+<tr>
+<td><code>slides_detailed_url</code></td>
+<td>Same, detailed version</td>
+</tr>
+<tr>
+<td><code>drive_pdf_url</code></td>
+<td>Upload PDF to Drive under new Gmail account, share, copy URL</td>
+</tr>
+<tr>
+<td>Per-chapter <code>slides_url</code> (×18)</td>
+<td>Extract from NotebookLM Studio per chapter — bulk task; Phase 1 requires Law 1 only</td>
+</tr>
+<tr>
+<td><code>cover.jpg</code></td>
+<td>Nano Banana: "Book cover, 'The Laws of Human Nature' by Robert Greene, classical philosophy aesthetic, dark indigo + gold"</td>
+</tr>
+<tr>
+<td>Infographics 02–18 (×34)</td>
+<td>Nano Banana per existing prompt template; not blocking Phase 1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fate-of-the-dba-site-wiki-copy">Fate of the dba-site wiki copy<a class="headerlink" href="#fate-of-the-dba-site-wiki-copy" title="Permanent link">&para;</a></h3>
+<p><strong>Chosen: Option B</strong> — migrate to new repo, replace wiki copy with a stub linking out.</p>
+<ul>
+<li>Verified no other dba-site pages link to <code>references/laws-of-human-nature/</code> (grep returned no results) → safe to migrate</li>
+<li>After migration succeeds and new Pages site is live, replace <code>dba-site/content/references/laws-of-human-nature/index.md</code> with:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>---
+<span class="gu">title: &quot;Laws of Human Nature → Moved&quot;</span>
+<span class="gu">---</span>
+
+<span class="gh"># Laws of Human Nature</span>
+
+The full companion (chapters, study guides, slides, audio overview, infographics) now lives in the <span class="gs">**Learning From Books**</span> system:
+
+→ https://&lt;user&gt;.github.io/learning-from-books-system-that-improves-with-your-feedback/books/laws-of-human-nature/
+
+Feedback or requests: <span class="sb">`learningfrombooks.feedback+lawsofhumannature@gmail.com`</span>
+</code></pre></div>
+<ul>
+<li>Delete the rest of <code>content/references/laws-of-human-nature/</code> in a separate commit/PR for easy revert if needed.</li>
+</ul>
+<h2 id="11-acceptance-criteria">11. Acceptance criteria<a class="headerlink" href="#11-acceptance-criteria" title="Permanent link">&para;</a></h2>
+<p>Phase 1 is "done" only when every item below passes. Browser verification is mandatory; "files committed" is insufficient.</p>
+<h3 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Repo <code>learning-from-books-system-that-improves-with-your-feedback</code> exists on GitHub</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>main</code> branch contains all spec'd files</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>requirements.txt</code> pins MkDocs + Material + plugins</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Local <code>mkdocs serve</code> runs without errors at <code>http://localhost:8000</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>mkdocs build --strict</code> passes</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> GitHub Pages enabled, Source = "GitHub Actions"</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> First push to <code>main</code> triggers <code>deploy.yml</code>, completes green within 3 minutes</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Public URL returns HTTP 200</li>
+</ul>
+<h3 id="content-laws-of-human-nature-seed">Content (Laws of Human Nature seed)<a class="headerlink" href="#content-laws-of-human-nature-seed" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>book.yaml</code> exists with all required fields populated (no <code>TODO</code> placeholders for the URLs)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> All 18 chapter files present in <code>docs/books/laws-of-human-nature/chapters/</code></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Each chapter has slide iframe block; Law 1 has real slide URL</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Each chapter has merged "Study Guide" section</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Law 1 START + END infographics display correctly</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>cover.jpg</code> renders in master index card</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>feedback/log.md</code> exists with format header</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>research/</code> stubs present (3 files)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>feedback-protocol.md</code> at repo root, documents 8 intent types + 7-step workflow</li>
+</ul>
+<h3 id="visual-ux-manual-browser-checks-on-the-live-url">Visual &amp; UX (manual browser checks on the live URL)<a class="headerlink" href="#visual-ux-manual-browser-checks-on-the-live-url" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Master index shows hero + book card grid (1 card)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Clicking the card opens book index page</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Sidebar shows: index → chapters (18 entries) → research</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Search finds chapter content (e.g. "rationality" → chapter 1)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Dark mode toggle works, persists across reloads</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Mobile viewport: grid collapses, sidebar becomes burger menu, chapter pages readable</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Law 1 slide iframe renders and plays</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Audio overview link opens NotebookLM correctly</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>mailto:</code> links pre-fill correct <code>+lawsofhumannature</code> plus-address</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Tags page shows all 8 seeded categories</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Tag click filters to relevant books</li>
+</ul>
+<h3 id="operational">Operational<a class="headerlink" href="#operational" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Gmail <code>learningfrombooks.feedback@gmail.com</code> provisioned</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Test email to <code>learningfrombooks.feedback+lawsofhumannature@gmail.com</code> lands in inbox with correct <code>Delivered-To</code> header</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Google AI Studio API key created under same Gmail (stored locally, NOT committed — for Phase 2)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Google Drive folder created; Laws of Human Nature PDF uploaded; share link active</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> NotebookLM workspace exists under same Gmail; notebook visible</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> dba-site wiki stub commit replaces full content; link to new Pages URL resolves</li>
+</ul>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>README.md</code> explains: what this repo is, how to add a book, where feedback goes</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>feedback-protocol.md</code> published as above</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>docs/books/laws-of-human-nature/index.md</code> is a complete book landing page</li>
+</ul>
+<h3 id="definition-of-done">Definition of done<a class="headerlink" href="#definition-of-done" title="Permanent link">&para;</a></h3>
+<p>User can open the live Pages URL on a phone, find Laws of Human Nature, read Law 1 with embedded slides and study guide, and send a feedback email that lands correctly in the Gmail inbox.</p>
+<h2 id="12-risks-mitigations">12. Risks &amp; mitigations<a class="headerlink" href="#12-risks-mitigations" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Severity</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NotebookLM browser automation fragility (Phase 2)</strong></td>
+<td>High</td>
+<td>Phase 1 is manual — no automation risk now. Phase 2 spec must define a fallback: Gemini API for text generation + ElevenLabs for audio if NotebookLM UI shifts break Playwright flow.</td>
+</tr>
+<tr>
+<td><strong>GitHub Actions cron drift</strong></td>
+<td>Medium</td>
+<td>Latency budget stated explicitly (1h ack, 4h fulfill) so Phase 2 expectations are grounded.</td>
+</tr>
+<tr>
+<td><strong>Gmail single-account ToS</strong></td>
+<td>Low</td>
+<td>Plus-addressing is officially supported. One account avoids multi-account violation.</td>
+</tr>
+<tr>
+<td><strong>PDF auto-discovery legal exposure (Phase 3)</strong></td>
+<td>Medium</td>
+<td>Phase 3 must restrict sourcing to: (a) user-uploaded PDFs, (b) Project Gutenberg / public domain, (c) author-permitted free PDFs. No Anna's Archive or pirated sources. Spec deferred but flagged now.</td>
+</tr>
+<tr>
+<td><strong>Google Slides "anyone with link" exposure</strong></td>
+<td>Low</td>
+<td>All artifacts are derivative summaries of books the user owns; no proprietary content. Public sharing is intentional (the site is public).</td>
+</tr>
+<tr>
+<td><strong>Google AI Studio free tier rate limit</strong></td>
+<td>Low</td>
+<td>1500 req/day is comfortably above expected feedback volume; Phase 2 spec should add a hard daily cap + queue overflow handling.</td>
+</tr>
+<tr>
+<td><strong>GitHub Pages bandwidth cap (100 GB/mo)</strong></td>
+<td>Very low</td>
+<td>Lean asset strategy keeps repo small; site would need ~30k page views/month to approach the cap.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-open-questions-resolve-during-user-spec-review">13. Open questions (resolve during user spec review)<a class="headerlink" href="#13-open-questions-resolve-during-user-spec-review" title="Permanent link">&para;</a></h2>
+<p>None blocking. All major decisions were made during brainstorming.</p>
+<p>Minor refinements possible at user review time:
+- Whether to include a "Last updated: N days ago" badge on each book card (suggest: yes, simple to derive from <code>last_updated</code>)
+- Whether the per-book <code>feedback/log.md</code> should be excluded from build or published as a transparency feature (suggest: publish — shows the system improving in public)</p>
+<h2 id="14-references">14. References<a class="headerlink" href="#14-references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Existing seed content: <code>dba-site/content/references/laws-of-human-nature/</code></li>
+<li>Project memory: <code>[[project-laws-of-human-nature]]</code></li>
+<li>Naming convention memory: <code>[[feedback-naming-style]]</code></li>
+<li>NotebookLM MCP plugin (already authenticated for Playwright-based generation): in user's plugin set</li>
+<li>Nano Banana plugin (Gemini image generation): in user's plugin set</li>
+<li>MkDocs Material docs: https://squidfunk.github.io/mkdocs-material/</li>
+<li>MkDocs awesome-pages plugin: https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin</li>
+<li>Gmail plus-addressing reference: https://support.google.com/mail/answer/12096306</li>
+<li>Google AI Studio (Gemini API): https://aistudio.google.com/</li>
+<li>GitHub Pages with Actions deployment: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site</li>
+<li>Claude Code Routines doc (researched, rejected for this use case): https://code.claude.com/docs/en/routines</li>
+</ul>
+<h2 id="15-design-delta-2026-07-13-fork-ready-architecture">15. Design delta (2026-07-13): fork-ready architecture<a class="headerlink" href="#15-design-delta-2026-07-13-fork-ready-architecture" title="Permanent link">&para;</a></h2>
+<p>Approved during scope-clarification brainstorm. Phase 1 scope unchanged; three build rules added so the repo works as a template others can fork.</p>
+<h3 id="151-single-config-boundary">15.1 Single config boundary<a class="headerlink" href="#151-single-config-boundary" title="Permanent link">&para;</a></h3>
+<p>Everything personal to the site owner lives in exactly two places:</p>
+<ul>
+<li><code>mkdocs.yml</code> — site name, site URL, GitHub repo URL</li>
+<li>per-book <code>books/&lt;slug&gt;/book.yaml</code> — feedback email, NotebookLM URLs, Drive PDF URL</li>
+</ul>
+<p>Scripts (<code>build_index.py</code>, <code>new_book.py</code>, migration) read config only. <strong>Zero hardcoded emails, usernames, or URLs in any <code>.py</code> file or workflow.</strong> A forker edits two YAML files and nothing else.</p>
+<h3 id="152-contentengine-separation">15.2 Content/engine separation<a class="headerlink" href="#152-contentengine-separation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>books/&lt;slug&gt;/</code> = pure content — swappable per fork</li>
+<li><code>scripts/</code>, <code>.github/workflows/</code>, <code>overrides/</code>, <code>docs/</code> templates = engine — forkable as-is</li>
+</ul>
+<p>The engine never references <code>laws-of-human-nature</code> (or any book slug) by name. Acceptance check: <code>grep -r "laws-of-human-nature" scripts/ .github/</code> returns nothing.</p>
+<h3 id="153-roadmap-recorded-not-built">15.3 Roadmap (recorded, not built)<a class="headerlink" href="#153-roadmap-recorded-not-built" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Added scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>Autonomous feedback loop (unchanged from §3)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Fork documentation — "make your own book site" guide, &lt;1 hour setup for a stranger</td>
+</tr>
+<tr>
+<td>4+</td>
+<td>Cohort/study-group layer — shared reading schedules, discussion prompts, group flashcards</td>
+</tr>
+</tbody>
+</table>
+<p>Community contributions to <em>this</em> site (PRs adding books) are explicitly out of scope at every phase — clarified 2026-07-13.</p>
+</body>
+</html>
